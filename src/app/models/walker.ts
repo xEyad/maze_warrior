@@ -3,7 +3,7 @@ export class Walker
 {
   constructor(start:Point)
   {
-    this.curPoint = start;
+    this.curPos = start;
   }
 
 
@@ -31,28 +31,28 @@ export class Walker
   }
   private MoveXBy(d:number)
   {
-    let p = new Point(this.curPoint.x+d,this.curPoint.y);
+    let p = new Point(this.curPos.x+d,this.curPos.y);
     this.MoveTo(p);
   }
   private MoveYBy(d:number)
   {
-    let p = new Point(this.curPoint.x,this.curPoint.y+d);
+    let p = new Point(this.curPos.x,this.curPos.y+d);
     this.MoveTo(p);
   }
   private MoveTo(point:Point):void
   {
     this.AddToVisited(point);
     this.moveStack.push(point);
-    this.curPoint = point;
+    this.curPos = point;
   }
   private AddToVisited(point:Point):void
   {
     if(!this.visited.includes(point))
       this.visited.push(point);
   }
-  visited:Point[];
-  curPoint:Point;
-  moveStack:Point[];
+  visited:Point[] = [];
+  curPos:Point;
+  moveStack:Point[] = [];
 }
 
 export enum Dir
