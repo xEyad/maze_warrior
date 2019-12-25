@@ -20,15 +20,6 @@ export class Maze
     for (let x = 0; x < width; x++)
       for (let y = 0; y < height; y++)
         this.maze.push(new Tile(State.open,new Point(x,y)));
-
-    this.SetStartPoint(new Point(0,0));
-    this.TileAt(1,1).state = State.blocked;
-    this.TileAt(2,1).state = State.blocked;
-    this.TileAt(3,1).state = State.blocked;
-    this.TileAt(1,3).state = State.blocked;
-    this.TileAt(1,4).state = State.blocked;
-    this.TileAt(3,3).state = State.blocked;
-    this.TileAt(3,4).state = State.goal;
   }
   SetStartPoint(point:Point)
   {
