@@ -1,4 +1,4 @@
-import { Walker } from './walker';
+import { Walker, Dir } from './walker';
 import { State } from './tile';
 import { Maze } from './maze';
 import { Point } from './point';
@@ -7,21 +7,58 @@ import { Point } from './point';
 export class World implements iDrawable
 {
   maze:Maze;
+  walker:Walker;
+  public get walkerPos() : Point {
+    return  this.walker.curPos;
+  }
+
   constructor()
   {
-    this.maze = new Maze(4,5);
-    this.maze.SetStartPoint(new Point(0,0));
-    this.maze.TileAt(1,1).state = State.blocked;
-    this.maze.TileAt(2,1).state = State.blocked;
-    this.maze.TileAt(3,1).state = State.blocked;
-    this.maze.TileAt(1,3).state = State.blocked;
-    this.maze.TileAt(1,4).state = State.blocked;
-    this.maze.TileAt(3,3).state = State.blocked;
-    this.maze.TileAt(3,4).state = State.goal;
+    this.maze = new Maze(4,5,new Point(0,0));
+    this.maze.SetTileState(new Point(1,1),State.blocked);
+    this.maze.SetTileState(new Point(2,1),State.blocked);
+    this.maze.SetTileState(new Point(3,1),State.blocked);
+    this.maze.SetTileState(new Point(1,3),State.blocked);
+    this.maze.SetTileState(new Point(1,4),State.blocked);
+    this.maze.SetTileState(new Point(3,3),State.blocked);
+    this.maze.SetGoalAt(new Point(3,4));
+    this.walker = new Walker(this.maze.start.coordinate);
   }
   Run():void
   {
-    let walker = new Walker(this.maze.start.coordinate);
+    this.maze.Draw();
+    console.log(this.maze.toString());
+    this.MoveWalker(Dir.right);
+    console.log(this.maze.toString());
+  }
+  MoveWalker(dir:Dir)
+  {
+    let newPos = this.getPosForDir(dir);
+    if(Point.TotalDifference(this.walkerPos,newPos) != 1)
+    {
+      this.walker.Move(dir);
+      this.maze.PutWalkerAt(this.walkerPos);
+    }
+  }
+  private getPosForDir(dir:Dir) : Point
+  {
+    switch (dir)
+    {
+      case Dir.right:
+        return new Point(this.walkerPos.x+1,this.walkerPos.y);
+        break;
+      case Dir.left:
+        return new Point(this.walkerPos.x-1,this.walkerPos.y);
+        break;
+      case Dir.bot:
+        return new Point(this.walkerPos.x,this.walkerPos.y+1);
+        break;
+      case Dir.top:
+        return new Point(this.walkerPos.x,this.walkerPos.y-1);
+        break;
+      default:
+        break;
+    }
   }
   Draw()
   {
