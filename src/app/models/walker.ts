@@ -1,4 +1,5 @@
-class Walker
+import { Point } from './point';
+export class Walker
 {
   visited:Point[];
   curPoint:Point;
