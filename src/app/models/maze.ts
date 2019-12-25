@@ -5,6 +5,7 @@ export class Maze implements iDrawable
 {
   goal:Tile;
   start:Tile;
+  walker:Tile;
   width:number;
   height:number;
   maze:Tile[] = [];
@@ -13,26 +14,42 @@ export class Maze implements iDrawable
     return this.width*this.height;
   }
 
-  constructor(width:number,height:number)
+  constructor(width:number,height:number,start:Point)
   {
     this.width = width;
     this.height = height;
     for (let x = 0; x < width; x++)
       for (let y = 0; y < height; y++)
         this.maze.push(new Tile(State.open,new Point(x,y)));
+    this.SetStartPoint(start);
   }
-  SetStartPoint(point:Point)
+  PutWalkerAt(point:Point) : void
   {
-    if(!this.isInsideMaze(point))
-      throw `point ${point}`;
-    this.start = this.maze[this.pointTo1D(point)];
+    this.walker.hasWalker = false;
+    let newWalkerTile = this.TileAt(point);
+    newWalkerTile.hasWalker = true;
+    this.walker = newWalkerTile;
   }
-  TileAt(x:number,y:number) :Tile
+  SetGoalAt(point:Point) : void
   {
-    let index = this.to1D(x,y);
-    return this.maze[index];
+    if(this.goal)
+      this.goal.RemoveGoal();
+    this.goal = this.TileAt(point);
+    this.goal.SetAsGoal();
   }
-  Draw()
+  SetStartPoint(point:Point) : void
+  {
+    if(this.start)
+      this.start.hasWalker = false;
+    this.start = this.TileAt(point);
+    this.start.hasWalker = true;
+    this.walker = this.start;
+  }
+  SetTileState(tileLocation:Point,newState:State) : void
+  {
+    this.TileAt(tileLocation).state = newState;
+  }
+  Draw() : void
   {
     let mazeTxt = '';
     for (let x = 0; x < this.width; x++)
@@ -41,12 +58,14 @@ export class Maze implements iDrawable
       {
         let index = this.to1D(x,y);
         let tile = this.maze[index];
-        if(tile ==  this.start)
+        if(tile.hasWalker)
+          mazeTxt+='W';
+        else if(tile ==  this.start)
           mazeTxt+='S';
+        else if (tile.IsGoal())
+          mazeTxt+='G';
         else if (tile.state == State.open)
           mazeTxt+='-';
-        else if (tile.state == State.goal)
-            mazeTxt+='G';
         else if (tile.state == State.blocked)
           mazeTxt+='x';
       }
@@ -65,5 +84,17 @@ export class Maze implements iDrawable
   to1D(x:number,y:number) : number
   {
     return y*this.width+x;
+  }
+  toString() : string
+  {
+    return `walker at: ${this.walker.coordinate}\ngoal at: ${this.goal.coordinate}\nstart at: ${this.start.coordinate}`;
+  }
+
+  private TileAt(point:Point) :Tile
+  {
+    if(!this.isInsideMaze(point))
+      throw `point ${point} is outside of the maze!`;
+    let index = this.to1D(point.x,point.y);
+    return this.maze[index];
   }
 }
