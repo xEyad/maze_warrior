@@ -1,7 +1,7 @@
 import {Tile,State} from './tile';
 import {Point} from './point';
 
-export class Maze
+export class Maze implements iDrawable
 {
   goal:Tile;
   start:Tile;
