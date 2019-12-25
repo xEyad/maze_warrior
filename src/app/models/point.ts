@@ -7,4 +7,8 @@ export class Point
   }
   x:number;
   y:number;
+  toString():string
+  {
+    return `(${this.x},${this.y})`;
+  }
 }
