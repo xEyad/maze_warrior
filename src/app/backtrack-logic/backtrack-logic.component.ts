@@ -1,3 +1,4 @@
+import { World } from './../models/world';
 import { Maze } from './../models/maze';
 import { Component, OnInit } from '@angular/core';
 
@@ -11,13 +12,13 @@ export class BacktrackLogicComponent implements OnInit {
 
   constructor()
   {
-
+    let w = new World();
+    w.Draw();
   }
 
   ngOnInit()
   {
-    let m = new Maze();
-    m.Draw();
+
   }
 }
 
