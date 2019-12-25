@@ -13,7 +13,7 @@ export class BacktrackLogicComponent implements OnInit {
   constructor()
   {
     let w = new World();
-    w.Draw();
+    w.Run();
   }
 
   ngOnInit()
