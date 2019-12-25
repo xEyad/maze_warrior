@@ -1,0 +1,4 @@
+interface iDrawable
+{
+  Draw():void;
+}
