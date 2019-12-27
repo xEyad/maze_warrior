@@ -25,6 +25,10 @@ export class GameService {
     maze.SetTileState(new Point(3,3),State.blocked);
     this.world = new World(maze);
   }
+  Talk():string
+  {
+    return this.world.Talk();
+  }
   IsInsideWorld(loc:Point):boolean
   {
     return loc.x>=0 && loc.x < this.mazeWidth &&
