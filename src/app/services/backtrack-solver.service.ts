@@ -7,24 +7,58 @@ import { Point } from '../models/utility/point';
 @Injectable({
   providedIn: 'root'
 })
-export class BacktrackSolverService {
+export class BacktrackSolverService
+{
 
-  private walker:Walker;
   constructor(public game:GameService)
   {
     this.walker = this.game.world.walker;
+    this.moveStack.push(this.walker.CurPos());
     game.StartGameLoop();
   }
   Talk():any
   {
     return this.GetAvailableTiles();
   }
+  SolveInSteps(solvingSpeed:number):void
+  {
+    setInterval(()=>{
+      if(!this.game.IsGameFinished())
+    {
+      if(this.GetAvailableTiles().length > 0)
+      {
+        const loc = this.GetAvailableTiles()[0];
+        this.game.MoveWalker(this.DirFromPoint(loc));
+        this.moveStack.push(loc);
+      }
+      if(!this.game.IsGameFinished())
+        this.BacktrackToBranchingPoint();
+    }
+    },solvingSpeed)
+
+  }
   SolveGame():void
   {
-    while(this.GetAvailableTiles().length > 0)
+    while(!this.game.IsGameFinished())
     {
-      const loc = this.GetAvailableTiles()[0];
-      this.game.MoveWalker(this.DirFromPoint(loc))
+      while(this.GetAvailableTiles().length > 0)
+      {
+        const loc = this.GetAvailableTiles()[0];
+        this.game.MoveWalker(this.DirFromPoint(loc));
+        this.moveStack.push(loc);
+      }
+      if(!this.game.IsGameFinished())
+        this.BacktrackToBranchingPoint();
+    }
+
+  }
+  private BacktrackToBranchingPoint():void
+  {
+    while(this.GetAvailableTiles().length == 0)
+    {
+      let prevPos = this.moveStack.pop();
+      let dir = this.DirFromPoint(prevPos);
+      this.game.MoveWalker(dir);
     }
   }
   private DirFromPoint(point:Point):Dir
@@ -69,4 +103,6 @@ export class BacktrackSolverService {
       !this.walker.IsVisitedBefore(loc)
       )
   }
+  private moveStack:Point[] = [];
+  private walker:Walker;
 }
