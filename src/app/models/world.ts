@@ -9,19 +9,12 @@ export class World implements iDrawable
   maze:Maze;
   walker:Walker;
   public get walkerPos() : Point {
-    return  this.walker.curPos;
+    return  this.walker.CurPos();
   }
 
-  constructor()
+  constructor(maze:Maze)
   {
-    this.maze = new Maze(4,5,new Point(0,0));
-    this.maze.SetTileState(new Point(1,1),State.blocked);
-    this.maze.SetTileState(new Point(2,1),State.blocked);
-    this.maze.SetTileState(new Point(3,1),State.blocked);
-    this.maze.SetTileState(new Point(1,3),State.blocked);
-    this.maze.SetTileState(new Point(1,4),State.blocked);
-    this.maze.SetTileState(new Point(3,3),State.blocked);
-    this.maze.SetGoalAt(new Point(3,4));
+    this.maze = maze;
     this.walker = new Walker(this.maze.start.coordinate);
   }
 
@@ -49,8 +42,7 @@ export class World implements iDrawable
       (newPos.x >= 0 && newPos.x < this.maze.width) &&
       (newPos.y >= 0 && newPos.y < this.maze.height) &&
       this.maze.GetTileState(newPos) != State.blocked
-      )
-
+      );
   }
   private getPosForDir(dir:Dir) : Point
   {
