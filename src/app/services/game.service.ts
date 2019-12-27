@@ -12,22 +12,23 @@ import { Point } from '../models/utility/point';
 ///serves as the MAIN entry point of game model
 export class GameService {
 
-  readonly world : World;
-  private gameLoop =  null;
-  private gameEnded = false;
   constructor()
   {
-    let maze = new Maze(4,5,new Point(0,0));
+    this.mazeWidth = 4;
+    this.mazeHeight = 4;
+    let maze = new Maze(this.mazeWidth,this.mazeHeight,new Point(0,0),new Point(3,4));
     maze.SetTileState(new Point(1,1),State.blocked);
     maze.SetTileState(new Point(2,1),State.blocked);
     maze.SetTileState(new Point(3,1),State.blocked);
     maze.SetTileState(new Point(1,3),State.blocked);
     maze.SetTileState(new Point(1,4),State.blocked);
     maze.SetTileState(new Point(3,3),State.blocked);
-    maze.SetGoalAt(new Point(3,4));
     this.world = new World(maze);
   }
-
+  TileState(location:Point):State
+  {
+    return this.world.TileState(location);
+  }
   IsGameEnded() : boolean
   {
     return this.gameEnded;
@@ -51,6 +52,15 @@ export class GameService {
     if(!this.IsGameEnded())
       this.world.MoveWalker(dir);
   }
+  StartGameLoop()
+  {
+    this.gameLoop = setInterval(() =>
+    {
+      this.UpdateModel();
+      this.Draw();
+    }, this.MsFromFPS(5));
+  }
+
 
   private UpdateModel():void
   {
@@ -66,19 +76,14 @@ export class GameService {
       console.log('you have reached your goal');
 
   }
-
-  StartGameLoop()
-  {
-    this.gameLoop = setInterval(() =>
-    {
-      this.UpdateModel();
-      this.Draw();
-    }, this.MsFromFPS(5));
-  }
-
   private MsFromFPS(fps:number):number
   {
     return 1000/fps;
   }
 
+  readonly mazeWidth;
+  readonly mazeHeight;
+  readonly world : World;
+  private gameLoop =  null;
+  private gameEnded = false;
 }
