@@ -11,6 +11,10 @@ export class World implements iDrawable
     this.maze = maze;
     this.walker = new Walker(this.maze.startTile.coordinate);
   }
+  Talk():string
+  {
+    return this.maze.Talk();
+  }
   Draw()
   {
     this.maze.Draw();
