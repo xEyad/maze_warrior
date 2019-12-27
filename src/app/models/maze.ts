@@ -3,13 +3,25 @@ import {Point} from './utility/point';
 
 export class Maze implements iDrawable
 {
-  goal:Tile;
-  start:Tile;
-  walker:Tile;
-  width:number;
-  height:number;
-  maze:Tile[] = [];
+  private goal:Tile;
+  private start:Tile;
+  private walker:Tile;
+  readonly width:number;
+  readonly height:number;
+  private maze:Tile[] = [];
 
+  public get goalTile() : Tile
+  {
+    return this.goal;
+  }
+  public get startTile() : Tile
+  {
+    return this.start;
+  }
+  public get walkerTile() : Tile
+  {
+    return this.walker;
+  }
   public get size() : number {
     return this.width*this.height;
   }
