@@ -14,7 +14,7 @@ export class GameService {
 
   world : World;
   gameLoop =  null;
-
+  private gameEnded = false;
   constructor()
   {
     let maze = new Maze(4,5,new Point(0,0));
@@ -28,9 +28,15 @@ export class GameService {
     this.world = new World(maze);
   }
 
+  IsGameEnded() : boolean
+  {
+    return this.gameEnded;
+  }
   ///only responds to arrowKeys
   MoveWalkerByKbd(event: KeyboardEvent):void
   {
+    if(this.IsGameEnded())
+      return;
     if (event.key === 'ArrowUp')
       this.world.MoveWalker(Dir.up);
     else if (event.key === 'ArrowDown')
@@ -40,19 +46,33 @@ export class GameService {
     else  if (event.key === 'ArrowRight')
       this.world.MoveWalker(Dir.right);
   }
-
   MoveWalker(dir:Dir):void
   {
-    this.world.MoveWalker(dir);
+    if(!this.IsGameEnded())
+      this.world.MoveWalker(dir);
   }
+
+  private UpdateModel():void
+  {
+    if(this.world.walkerPos.Equals(this.world.goalPos))
+      this.gameEnded = true;
+  }
+  private Draw():void
+  {
+    console.clear();
+    this.world.Draw();
+
+    if(this.IsGameEnded())
+      console.log('you have reached your goal');
+
+  }
+
   StartGameLoop()
   {
     this.gameLoop = setInterval(() =>
     {
-      this.world.UpdateModel();
-      console.clear();
-      this.world.Draw();
-
+      this.UpdateModel();
+      this.Draw();
     }, this.MsFromFPS(5));
   }
 
