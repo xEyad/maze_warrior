@@ -1,6 +1,7 @@
+import { GameService } from './../services/game.service';
 import { World } from './../models/world';
 import { Maze } from './../models/maze';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-backtrack-logic',
@@ -10,12 +11,17 @@ import { Component, OnInit } from '@angular/core';
 export class BacktrackLogicComponent implements OnInit {
 
 
-  constructor()
+  constructor(public gameService:GameService)
   {
-    let w = new World();
-    w.Run();
+    gameService.StartGameLoop();
+  }
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    this.gameService.MoveWalker(event, 'keydown');
   }
 
+  @HostListener('document:keyup', ['$event']) onKeyupHandler(event: KeyboardEvent) {
+    // this.gameService.MoveWalker(event, 'keyup');
+  }
   ngOnInit()
   {
 
