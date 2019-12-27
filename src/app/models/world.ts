@@ -7,7 +7,7 @@ import { Point } from './utility/point';
 export class World implements iDrawable
 {
   private maze:Maze;
-  private walker:Walker;
+  readonly walker:Walker;
 
   public get goalPos() : Point {
     return  this.maze.goalTile.coordinate;
