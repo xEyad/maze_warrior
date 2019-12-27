@@ -18,8 +18,6 @@ export class GameService {
 
   MoveWalker(event: KeyboardEvent, type: string):void
   {
-    console.log('gameservice moveWalker. key: '+event.key);
-
     if (event.key === 'ArrowUp')
       this.world.MoveWalker(Dir.up);
     else if (event.key === 'ArrowDown')
@@ -28,12 +26,22 @@ export class GameService {
       this.world.MoveWalker(Dir.left);
     else  if (event.key === 'ArrowRight')
       this.world.MoveWalker(Dir.right);
+
   }
   StartGameLoop()
   {
-    this.gameLoop = setInterval(() => {
+    this.gameLoop = setInterval(() =>
+    {
       this.world.UpdateModel();
+      console.clear();
       this.world.Draw();
-    }, 1000);
+
+    }, this.MsFromFPS(15));
   }
+
+  private MsFromFPS(fps:number):number
+  {
+    return 1000/fps;
+  }
+
 }
