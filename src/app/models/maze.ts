@@ -34,7 +34,10 @@ export class Maze implements iDrawable
       for (let x = 0; x < width; x++)
         this.maze.push(new Tile(State.open,new Point(x,y)));
     this.start = this.TileAt(start);
-    this.TileAt(goal).SetAsGoal();
+    this.walker = this.start;
+    this.start.hasWalker = true;
+    this.goal = this.TileAt(goal);
+    this.goal.SetAsGoal();
   }
   PutWalkerAt(point:Point) : void
   {
