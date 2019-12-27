@@ -5,6 +5,8 @@ import { Dir } from '../models/walker';
 @Injectable({
   providedIn: 'root'
 })
+
+///serves as the MAIN entry point of game model
 export class GameService {
 
   world : World;
@@ -30,7 +32,8 @@ export class GameService {
   StartGameLoop()
   {
     this.gameLoop = setInterval(() => {
-      this.world.Run();
+      this.world.UpdateModel();
+      this.world.Draw();
     }, 1000);
   }
 }

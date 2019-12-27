@@ -24,11 +24,7 @@ export class World implements iDrawable
     this.maze.SetGoalAt(new Point(3,4));
     this.walker = new Walker(this.maze.start.coordinate);
   }
-  Run():void
-  {
-    this.UpdateModel();
-    this.Draw();
-  }
+
   UpdateModel()
   {
   }
