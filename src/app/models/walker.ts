@@ -17,10 +17,10 @@ export class Walker
       case Dir.left:
         this.MoveXBy(-1);
         break;
-      case Dir.bot:
+      case Dir.down:
         this.MoveYBy(1);
         break;
-      case Dir.top:
+      case Dir.up:
         this.MoveYBy(-1);
         break;
       default:
@@ -59,6 +59,6 @@ export enum Dir
 {
   right,
   left,
-  top,
-  bot
+  up,
+  down
 }
