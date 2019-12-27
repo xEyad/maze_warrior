@@ -12,8 +12,8 @@ import { Point } from '../models/utility/point';
 ///serves as the MAIN entry point of game model
 export class GameService {
 
-  world : World;
-  gameLoop =  null;
+  readonly world : World;
+  private gameLoop =  null;
   private gameEnded = false;
   constructor()
   {
