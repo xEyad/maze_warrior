@@ -6,19 +6,6 @@ import { Point } from './utility/point';
 ///only 1 per program
 export class World implements iDrawable
 {
-  private maze:Maze;
-  readonly walker:Walker;
-
-  public get goalPos() : Point {
-    return  this.maze.goalTile.coordinate;
-  }
-  public get startPos() : Point {
-    return  this.maze.startTile.coordinate;
-  }
-  public get walkerPos() : Point {
-    return  this.walker.CurPos();
-  }
-
   constructor(maze:Maze)
   {
     this.maze = maze;
@@ -38,6 +25,20 @@ export class World implements iDrawable
       this.maze.PutWalkerAt(this.walkerPos);
     }
   }
+  TileState(location:Point):State
+  {
+    return this.maze.GetTileState(location);
+  }
+  get goalPos() : Point {
+    return  this.maze.goalTile.coordinate;
+  }
+  get startPos() : Point {
+    return  this.maze.startTile.coordinate;
+  }
+  get walkerPos() : Point {
+    return  this.walker.CurPos();
+  }
+
   private isNewPosValid(newPos:Point) : boolean
   {
     return  (
@@ -67,6 +68,9 @@ export class World implements iDrawable
         break;
     }
   }
+
+  private maze:Maze;
+  readonly walker:Walker;
 
 }
 
