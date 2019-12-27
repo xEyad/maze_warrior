@@ -6,8 +6,15 @@ import { Point } from './utility/point';
 ///only 1 per program
 export class World implements iDrawable
 {
-  maze:Maze;
-  walker:Walker;
+  private maze:Maze;
+  private walker:Walker;
+
+  public get goalPos() : Point {
+    return  this.maze.goalTile.coordinate;
+  }
+  public get startPos() : Point {
+    return  this.maze.startTile.coordinate;
+  }
   public get walkerPos() : Point {
     return  this.walker.CurPos();
   }
@@ -15,11 +22,7 @@ export class World implements iDrawable
   constructor(maze:Maze)
   {
     this.maze = maze;
-    this.walker = new Walker(this.maze.start.coordinate);
-  }
-
-  UpdateModel()
-  {
+    this.walker = new Walker(this.maze.startTile.coordinate);
   }
   Draw()
   {
