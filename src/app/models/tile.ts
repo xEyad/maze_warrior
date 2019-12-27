@@ -23,7 +23,7 @@ export class Tile
     return this.isGoal
   }
   state:State;
-  coordinate:Point;
+  readonly coordinate:Point;
   hasWalker:boolean;
   private isGoal:boolean;
 }
