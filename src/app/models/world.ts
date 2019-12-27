@@ -18,7 +18,6 @@ export class World implements iDrawable
   Draw()
   {
     this.maze.Draw();
-    console.log(this.maze.toString());
   }
   MoveWalker(dir:Dir)
   {
