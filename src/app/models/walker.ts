@@ -4,6 +4,7 @@ export class Walker
   constructor(start:Point)
   {
     this.curPos = start;
+    this.visited.push(start);
   }
 
   CurPos():Point
@@ -14,7 +15,17 @@ export class Walker
   {
     return this.moveStack;
   }
-  VisitedPoints():Point[]
+  IsVisitedBefore(loc:Point):boolean
+  {
+    for (let index = 0; index < this.VisitedLocations().length; index++)
+    {
+      const p = this.VisitedLocations()[index];
+      if(p.Equals(loc))
+        return true;
+    }
+    return false;
+  }
+  VisitedLocations():Point[]
   {
     return this.visited;
   }
