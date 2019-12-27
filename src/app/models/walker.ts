@@ -6,6 +6,10 @@ export class Walker
     this.curPos = start;
   }
 
+  CurPos():Point
+  {
+    return this.curPos;
+  }
   MoveStack():Point[]
   {
     return this.moveStack;
