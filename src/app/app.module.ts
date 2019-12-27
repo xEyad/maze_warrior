@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BacktrackLogicComponent } from './backtrack-logic/backtrack-logic.component';
+import { GameService } from './services/game.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { BacktrackLogicComponent } from './backtrack-logic/backtrack-logic.compo
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [GameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
