@@ -10,6 +10,19 @@ export class Maze implements iDrawable
   readonly height:number;
   private maze:Tile[] = [];
 
+  constructor(width:number,height:number,start:Point,goal:Point)
+  {
+    this.width = width;
+    this.height = height;
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++)
+        this.maze.push(new Tile(State.open,new Point(x,y)));
+    this.start = this.TileAt(start);
+    this.walker = this.start;
+    this.start.hasWalker = true;
+    this.goal = this.TileAt(goal);
+    this.goal.SetAsGoal();
+  }
   public get goalTile() : Tile
   {
     return this.goal;
@@ -26,18 +39,29 @@ export class Maze implements iDrawable
     return this.width*this.height;
   }
 
-  constructor(width:number,height:number,start:Point,goal:Point)
+  Talk():string
   {
-    this.width = width;
-    this.height = height;
-    for (let y = 0; y < height; y++)
-      for (let x = 0; x < width; x++)
-        this.maze.push(new Tile(State.open,new Point(x,y)));
-    this.start = this.TileAt(start);
-    this.walker = this.start;
-    this.start.hasWalker = true;
-    this.goal = this.TileAt(goal);
-    this.goal.SetAsGoal();
+    let mazeTxt = '';
+    for (let y = 0; y < this.height; y++)
+    {
+      for (let x = 0; x < this.width; x++)
+      {
+        let index = this.to1D(x,y);
+        let tile = this.maze[index];
+        if(tile.hasWalker)
+          mazeTxt+='W';
+        else if(tile ==  this.start)
+          mazeTxt+='S';
+        else if (tile.IsGoal())
+          mazeTxt+='G';
+        else if (tile.state == State.open)
+          mazeTxt+='-';
+        else if (tile.state == State.blocked)
+          mazeTxt+='x';
+      }
+      mazeTxt+='\n';
+    }
+    return `${mazeTxt}\nwalker at: ${this.walker.coordinate}\ngoal at: ${this.goal.coordinate}\nstart at: ${this.start.coordinate}`;
   }
   PutWalkerAt(point:Point) : void
   {
@@ -90,11 +114,6 @@ export class Maze implements iDrawable
   {
     return y*this.width+x;
   }
-  toString():string
-  {
-    return `walker at: ${this.walker.coordinate}\ngoal at: ${this.goal.coordinate}\nstart at: ${this.start.coordinate}`;
-  }
-
   private TileAt(point:Point) :Tile
   {
     if(!this.isInsideMaze(point))
