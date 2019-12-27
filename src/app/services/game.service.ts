@@ -15,7 +15,7 @@ export class GameService {
   constructor()
   {
     this.mazeWidth = 4;
-    this.mazeHeight = 4;
+    this.mazeHeight = 5;
     let maze = new Maze(this.mazeWidth,this.mazeHeight,new Point(0,0),new Point(3,4));
     maze.SetTileState(new Point(1,1),State.blocked);
     maze.SetTileState(new Point(2,1),State.blocked);
@@ -24,6 +24,11 @@ export class GameService {
     maze.SetTileState(new Point(1,4),State.blocked);
     maze.SetTileState(new Point(3,3),State.blocked);
     this.world = new World(maze);
+  }
+  IsInsideWorld(loc:Point):boolean
+  {
+    return loc.x>=0 && loc.x < this.mazeWidth &&
+           loc.y>=0 && loc.y < this.mazeHeight
   }
   TileState(location:Point):State
   {
