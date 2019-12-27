@@ -21,8 +21,24 @@ export class BacktrackSolverService {
   }
   SolveGame():void
   {
-
-
+    while(this.GetAvailableTiles().length > 0)
+    {
+      const loc = this.GetAvailableTiles()[0];
+      this.game.MoveWalker(this.DirFromPoint(loc))
+    }
+  }
+  private DirFromPoint(point:Point):Dir
+  {
+    if(point.x > this.walker.CurPos().x)
+      return Dir.right;
+    else if(point.x < this.walker.CurPos().x)
+      return Dir.left;
+    else if(point.y > this.walker.CurPos().y)
+      return Dir.down;
+    else if(point.y < this.walker.CurPos().y)
+      return Dir.up;
+    else
+      throw `can't determine direction of point ${point} relative to the walker`;
   }
   private GetAvailableTiles() : Point[]
   {
@@ -31,7 +47,9 @@ export class BacktrackSolverService {
     let right = new Point(curPos.x+1,curPos.y);
     let up = new Point(curPos.x,curPos.y-1);
     let down = new Point(curPos.x,curPos.y+1);
+
     let availableTiles:Point[] = [];
+
     if(this.IsAvailable(left))
       availableTiles.push(left);
     if(this.IsAvailable(right))
@@ -42,6 +60,7 @@ export class BacktrackSolverService {
       availableTiles.push(down);
     return availableTiles;
   }
+
   private IsAvailable(loc:Point) : boolean
   {
     return (
