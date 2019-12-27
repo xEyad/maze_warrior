@@ -26,15 +26,22 @@ export class World implements iDrawable
   }
   Run():void
   {
+    this.UpdateModel();
+    this.Draw();
+  }
+  UpdateModel()
+  {
+  }
+  Draw()
+  {
     this.maze.Draw();
-    console.log(this.maze.toString());
-    this.MoveWalker(Dir.right);
     console.log(this.maze.toString());
   }
   MoveWalker(dir:Dir)
   {
     let newPos = this.getPosForDir(dir);
-    if(Point.TotalDifference(this.walkerPos,newPos) != 1)
+    if( Point.TotalDifference(this.walkerPos,newPos) == 1 &&
+        this.maze.GetTileState(newPos) != State.blocked)
     {
       this.walker.Move(dir);
       this.maze.PutWalkerAt(this.walkerPos);
@@ -50,19 +57,16 @@ export class World implements iDrawable
       case Dir.left:
         return new Point(this.walkerPos.x-1,this.walkerPos.y);
         break;
-      case Dir.bot:
+      case Dir.down:
         return new Point(this.walkerPos.x,this.walkerPos.y+1);
         break;
-      case Dir.top:
+      case Dir.up:
         return new Point(this.walkerPos.x,this.walkerPos.y-1);
         break;
       default:
         break;
     }
   }
-  Draw()
-  {
-    this.maze.Draw();
-  }
+
 }
 
