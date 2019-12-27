@@ -18,8 +18,8 @@ export class Maze implements iDrawable
   {
     this.width = width;
     this.height = height;
-    for (let x = 0; x < width; x++)
-      for (let y = 0; y < height; y++)
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++)
         this.maze.push(new Tile(State.open,new Point(x,y)));
     this.SetStartPoint(start);
   }
@@ -49,12 +49,16 @@ export class Maze implements iDrawable
   {
     this.TileAt(tileLocation).state = newState;
   }
+  GetTileState(tileLocation:Point) : State
+  {
+    return this.TileAt(tileLocation).state;
+  }
   Draw() : void
   {
     let mazeTxt = '';
-    for (let x = 0; x < this.width; x++)
+    for (let y = 0; y < this.height; y++)
     {
-      for (let y = 0; y < this.height; y++)
+      for (let x = 0; x < this.width; x++)
       {
         let index = this.to1D(x,y);
         let tile = this.maze[index];
@@ -85,7 +89,7 @@ export class Maze implements iDrawable
   {
     return y*this.width+x;
   }
-  toString() : string
+  toString():string
   {
     return `walker at: ${this.walker.coordinate}\ngoal at: ${this.goal.coordinate}\nstart at: ${this.start.coordinate}`;
   }
