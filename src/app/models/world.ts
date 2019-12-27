@@ -1,7 +1,7 @@
 import { Walker, Dir } from './walker';
 import { State } from './tile';
 import { Maze } from './maze';
-import { Point } from './point';
+import { Point } from './utility/point';
 
 ///only 1 per program
 export class World implements iDrawable
@@ -36,12 +36,21 @@ export class World implements iDrawable
   MoveWalker(dir:Dir)
   {
     let newPos = this.getPosForDir(dir);
-    if( Point.TotalDifference(this.walkerPos,newPos) == 1 &&
-        this.maze.GetTileState(newPos) != State.blocked)
+    if(this.isNewPosValid(newPos))
     {
       this.walker.Move(dir);
       this.maze.PutWalkerAt(this.walkerPos);
     }
+  }
+  private isNewPosValid(newPos:Point) : boolean
+  {
+    return  (
+      Point.TotalDifference(this.walkerPos,newPos) == 1 &&
+      (newPos.x >= 0 && newPos.x < this.maze.width) &&
+      (newPos.y >= 0 && newPos.y < this.maze.height) &&
+      this.maze.GetTileState(newPos) != State.blocked
+      )
+
   }
   private getPosForDir(dir:Dir) : Point
   {

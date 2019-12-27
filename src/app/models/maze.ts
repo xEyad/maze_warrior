@@ -1,5 +1,5 @@
 import {Tile,State} from './tile';
-import {Point} from './point';
+import {Point} from './utility/point';
 
 export class Maze implements iDrawable
 {
