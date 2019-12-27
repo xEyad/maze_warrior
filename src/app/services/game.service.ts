@@ -38,14 +38,14 @@ export class GameService {
   {
     return this.world.TileState(location);
   }
-  IsGameEnded() : boolean
+  IsGameFinished() : boolean
   {
-    return this.gameEnded;
+    return this.reachedGoal;
   }
   ///only responds to arrowKeys
   MoveWalkerByKbd(event: KeyboardEvent):void
   {
-    if(this.IsGameEnded())
+    if(this.IsGameFinished())
       return;
     if (event.key === 'ArrowUp')
       this.world.MoveWalker(Dir.up);
@@ -58,7 +58,7 @@ export class GameService {
   }
   MoveWalker(dir:Dir):void
   {
-    if(!this.IsGameEnded())
+    if(!this.IsGameFinished())
       this.world.MoveWalker(dir);
   }
   StartGameLoop()
@@ -74,14 +74,14 @@ export class GameService {
   private UpdateModel():void
   {
     if(this.world.walkerPos.Equals(this.world.goalPos))
-      this.gameEnded = true;
+      this.reachedGoal = true;
   }
   private Draw():void
   {
     console.clear();
     this.world.Draw();
 
-    if(this.IsGameEnded())
+    if(this.IsGameFinished())
       console.log('you have reached your goal');
 
   }
@@ -94,5 +94,5 @@ export class GameService {
   readonly mazeHeight;
   readonly world : World;
   private gameLoop =  null;
-  private gameEnded = false;
+  private reachedGoal = false;
 }
