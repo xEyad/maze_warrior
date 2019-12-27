@@ -6,7 +6,14 @@ export class Walker
     this.curPos = start;
   }
 
-
+  MoveStack():Point[]
+  {
+    return this.moveStack;
+  }
+  VisitedPoints():Point[]
+  {
+    return this.visited;
+  }
   Move(dir:Dir):void
   {
     switch (dir)
@@ -50,9 +57,10 @@ export class Walker
     if(!this.visited.includes(point))
       this.visited.push(point);
   }
-  visited:Point[] = [];
-  curPos:Point;
-  moveStack:Point[] = [];
+
+  private visited:Point[] = [];
+  private curPos:Point;
+  private moveStack:Point[] = [];
 }
 
 export enum Dir
