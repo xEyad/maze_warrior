@@ -13,14 +13,13 @@ export class BacktrackLogicComponent implements OnInit {
 
   constructor(public game:GameService,public solver:BacktrackSolverService)
   {
-    solver.SolveGame();
+    solver.SolveInSteps(1000/1);
   }
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.game.MoveWalkerByKbd(event);
   }
 
   @HostListener('document:keyup', ['$event']) onKeyupHandler(event: KeyboardEvent) {
-    // this.game.MoveWalker(event, 'keyup');
   }
   ngOnInit()
   {
