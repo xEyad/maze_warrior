@@ -3,8 +3,8 @@ import {Point} from './utility/point';
 
 export class Maze implements iDrawable
 {
-  private goal:Tile;
-  private start:Tile;
+  readonly goal:Tile;
+  readonly start:Tile;
   private walker:Tile;
   readonly width:number;
   readonly height:number;
@@ -26,14 +26,15 @@ export class Maze implements iDrawable
     return this.width*this.height;
   }
 
-  constructor(width:number,height:number,start:Point)
+  constructor(width:number,height:number,start:Point,goal:Point)
   {
     this.width = width;
     this.height = height;
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++)
         this.maze.push(new Tile(State.open,new Point(x,y)));
-    this.SetStartPoint(start);
+    this.start = this.TileAt(start);
+    this.TileAt(goal).SetAsGoal();
   }
   PutWalkerAt(point:Point) : void
   {
@@ -41,21 +42,6 @@ export class Maze implements iDrawable
     let newWalkerTile = this.TileAt(point);
     newWalkerTile.hasWalker = true;
     this.walker = newWalkerTile;
-  }
-  SetGoalAt(point:Point) : void
-  {
-    if(this.goal)
-      this.goal.RemoveGoal();
-    this.goal = this.TileAt(point);
-    this.goal.SetAsGoal();
-  }
-  SetStartPoint(point:Point) : void
-  {
-    if(this.start)
-      this.start.hasWalker = false;
-    this.start = this.TileAt(point);
-    this.start.hasWalker = true;
-    this.walker = this.start;
   }
   SetTileState(tileLocation:Point,newState:State) : void
   {
