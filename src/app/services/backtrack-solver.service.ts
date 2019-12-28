@@ -15,26 +15,36 @@ export class BacktrackSolverService
     this.walker = this.game.world.walker;
     let simulationSpeed = 60;
     this.solvingSpeed = simulationSpeed;
-    game.StartGameLoop(simulationSpeed);
+    this.gameLoopRef = game.StartGameLoop(simulationSpeed);
   }
   Talk():any
   {
-    return this.GetAvailableTiles(this.walker.CurPos());
+    return this.GetAvailableTilesAround(this.walker.CurPos());
+  }
+  SolveGame():void
+  {
+    while(!(this.game.world.walkerPos.Equals(this.game.world.goalPos) || this.noMoreTracks))
+      this.SolveAStep();
   }
   SolveInSteps():void
   {
     var loop = setInterval(()=>{
       this.SolveAStep();
       if(this.game.IsGameFinished() || this.noMoreTracks)
+      {
+        clearInterval(this.gameLoopRef);
         clearInterval(loop);
+        console.log('NO SOLUTION FOUND');
+      }
+
     },1000/this.solvingSpeed)
 
   }
-  SolveAStep()
+  SolveAStep():void
   {
     if(this.game.IsGameFinished() || this.noMoreTracks)
         return;
-    let availableTiles =  this.GetAvailableTiles(this.walker.CurPos());
+    const availableTiles =  this.GetAvailableTilesAround(this.walker.CurPos());
     if(availableTiles.length > 0)
     {
       if(availableTiles.length>1)
@@ -47,31 +57,25 @@ export class BacktrackSolverService
       this.BacktrackToBranchingPointUNSAFE();
   }
 
-  SolveGame():void
-  {
-    while(!(this.game.world.walkerPos.Equals(this.game.world.goalPos) || this.noMoreTracks))
-      this.SolveAStep();
-  }
-
   private BacktrackToBranchingPointUNSAFE():void
   {
+    if(this.branchingPointsIndicies.length == 0)
+    {
+      this.noMoreTracks = true;
+      return;
+    }
     let branchingIndex = this.branchingPointsIndicies[this.branchingPointsIndicies.length-1];
     let moveStack = this.walker.MoveStack();
     let branchingPos = moveStack[branchingIndex];
 
     //make sure that the current branching point still have branches otherwise remove it
-    if(this.GetAvailableTiles(branchingPos).length <= 1)
+    if(this.GetAvailableTilesAround(branchingPos).length <= 1)
       this.branchingPointsIndicies.pop();
 
-    if(branchingPos == undefined)
-    {
-      this.noMoreTracks = true;
-      return;
-    }
     this.game.world.PutWalkerAt(branchingPos);
   }
 
-  private GetAvailableTiles(curPos) : Point[]
+  private GetAvailableTilesAround(curPos) : Point[]
   {
     let left = new Point(curPos.x-1,curPos.y);
     let right = new Point(curPos.x+1,curPos.y);
@@ -103,4 +107,5 @@ export class BacktrackSolverService
   private branchingPointsIndicies:number[]=[];
   private walker:Walker;
   private solvingSpeed;
+  private readonly gameLoopRef:NodeJS.Timer;
 }
