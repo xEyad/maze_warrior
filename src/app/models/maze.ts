@@ -12,62 +12,52 @@ export class Maze implements iDrawable
 
   constructor(map:string)
   {
-    let tiles:Tile[] = [];
-    let height=1;
-    let width=0;
-    let start:Tile;
-    let goal:Tile;
+    this.height=1;
+    this.width=0;
     for (let i = 0; i < map.length; i++)
     {
         if(map[i]=='\n')
         {
-          width = i;
+          this.width = i;
           break;
         }
     }
     for (let i = 0; i < map.length; i++)
     {
       if(map[i]=='\n')
-        height++;
+        this.height++;
     }
+    for (let y = 0; y < this.height; y++)
+      for (let x = 0; x < this.width; x++)
+      this.maze.push(new Tile(State.open,new Point(x,y)));
 
-    let tilesIndex = 0;
+    let tileIndex = 0;
     for (let i = 0; i < map.length; i++)
     {
       const char = map[i];
-      let x = tilesIndex % width;
-      let y = Math.floor(tilesIndex / width);
+      let x = tileIndex % (this.width);
+      let y = Math.floor(tileIndex / (this.width));
       let loc = new Point(x,y);
       if(char == 's')
       {
-        start = new Tile(State.open,loc);
-        tiles.push(start);
-        tilesIndex++;
+        this.start = this.TileAt(loc);
+        tileIndex++;
       }
       else if(char == 'x')
       {
-        tiles.push(new Tile(State.blocked,loc));
-        tilesIndex++;
+        this.SetTileState(loc,State.blocked);
+        tileIndex++;
       }
       else if(char == 'g')
       {
-        goal = new Tile(State.open,loc);
-        goal.SetAsGoal();
-        tiles.push(goal);
-        tilesIndex++;
+        this.goal = this.TileAt(loc);
+        this.goal.SetAsGoal();
+        tileIndex++;
       }
-      else if(char == '-')
-      {
-        tiles.push(new Tile(State.open,loc));
-        tilesIndex++;
-      }
+      else if(char=='-')
+        tileIndex++;
     }
-    this.goal = goal;
-    this.start = start;
     this.walker = this.start;
-    this.width = width;
-    this.height = height;
-    this.maze = tiles;
   }
   public get goalTile() : Tile
   {
