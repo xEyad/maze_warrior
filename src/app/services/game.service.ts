@@ -4,7 +4,6 @@ import { Maze } from './../models/maze';
 import { World } from './../models/world';
 import { Injectable } from '@angular/core';
 import { Point } from '../models/utility/point';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,14 +15,12 @@ export class GameService {
   {
     this.mazeWidth = 4;
     this.mazeHeight = 5;
-    let maze = new Maze(this.mazeWidth,this.mazeHeight,new Point(0,0),new Point(3,4));
-    maze.SetTileState(new Point(1,1),State.blocked);
-    maze.SetTileState(new Point(2,1),State.blocked);
-    maze.SetTileState(new Point(3,1),State.blocked);
-    maze.SetTileState(new Point(1,3),State.blocked);
-    maze.SetTileState(new Point(1,4),State.blocked);
-    maze.SetTileState(new Point(3,3),State.blocked);
-    this.world = new World(maze);
+    let map =
+    `s----
+    ---xx
+    -x--x
+    -x--g`;
+    this.world = new World(new Maze(map));
   }
   Talk():string
   {
@@ -89,7 +86,6 @@ export class GameService {
   {
     return 1000/fps;
   }
-
   readonly mazeWidth;
   readonly mazeHeight;
   readonly world : World;

@@ -10,18 +10,64 @@ export class Maze implements iDrawable
   readonly height:number;
   private maze:Tile[] = [];
 
-  constructor(width:number,height:number,start:Point,goal:Point)
+  constructor(map:string)
   {
+    let tiles:Tile[] = [];
+    let height=1;
+    let width=0;
+    let start:Tile;
+    let goal:Tile;
+    for (let i = 0; i < map.length; i++)
+    {
+        if(map[i]=='\n')
+        {
+          width = i;
+          break;
+        }
+    }
+    for (let i = 0; i < map.length; i++)
+    {
+      if(map[i]=='\n')
+        height++;
+    }
+
+    let tilesIndex = 0;
+    for (let i = 0; i < map.length; i++)
+    {
+      const char = map[i];
+      let x = tilesIndex % width;
+      let y = Math.floor(tilesIndex / width);
+      let loc = new Point(x,y);
+      if(char == 's')
+      {
+        start = new Tile(State.open,loc);
+        tiles.push(start);
+        tilesIndex++;
+      }
+      else if(char == 'x')
+      {
+        tiles.push(new Tile(State.blocked,loc));
+        tilesIndex++;
+      }
+      else if(char == 'g')
+      {
+        goal = new Tile(State.open,loc);
+        goal.SetAsGoal();
+        tiles.push(goal);
+        tilesIndex++;
+      }
+      else if(char == '-')
+      {
+        tiles.push(new Tile(State.open,loc));
+        tilesIndex++;
+      }
+    }
+    this.goal = goal;
+    this.start = start;
+    this.walker = this.start;
     this.width = width;
     this.height = height;
-    for (let y = 0; y < height; y++)
-      for (let x = 0; x < width; x++)
-        this.maze.push(new Tile(State.open,new Point(x,y)));
-    this.start = this.TileAt(start);
-    this.walker = this.start;
-    this.start.hasWalker = true;
-    this.goal = this.TileAt(goal);
-    this.goal.SetAsGoal();
+    this.maze = tiles;
   }
   public get goalTile() : Tile
   {
