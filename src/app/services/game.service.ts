@@ -51,7 +51,7 @@ export class GameService {
     if(!this.IsGameFinished())
       this.world.MoveWalker(dir);
   }
-  StartGameLoop(fps)
+  StartGameLoop(fps):NodeJS.Timer
   {
     this.gameLoop = setInterval(() =>
     {
@@ -60,6 +60,7 @@ export class GameService {
       if(this.IsGameFinished())
         clearInterval(this.gameLoop);
     }, this.MsFromFPS(fps));
+    return this.gameLoop;
   }
 
 
@@ -94,7 +95,7 @@ export class GameService {
   private gameLoop =  null;
   private reachedGoal = false;
 
-  private map1 = `+--+--+--+--+--+--+--+--+--+--+
+  private map = `+--+--+--+--+--+--+--+--+--+--+
       |              |     |  |
 +--+  +  +--+--+--+  +  +  +  +
 |     |     |     |  |  |  |  |
@@ -113,7 +114,7 @@ export class GameService {
 +--+--+--+--+  +--+--+  +  +  +
 |           |     |        |  |
 +  +--+--+  +  +  +--+  +--+  +
-|        |     |        |     G
+|        |     |        |    |G
 +--+--+--+--+--+--+--+--+--+--+`
   private map3 = `+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     |     |                 |     |  |              |       |
@@ -157,7 +158,7 @@ export class GameService {
 |  |        |           |                    |           |  G
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+`
 
-private map = `+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+private map1 = `+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 s     |     |     |                       |  |           |        |        |           |     |              |              |           |  |     |     |
 +--+  +  +  +  +  +--+  +--+--+  +--+--+  +  +  +--+  +  +--+  +  +  +  +  +  +--+--+  +  +--+  +--+--+--+  +  +--+--+--+  +--+--+--+  +  +  +  +  +  +
 |     |  |     |  |     |     |        |        |     |     |  |     |  |  |     |     |  |     |           |     |        |        |  |     |     |  |
