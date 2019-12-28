@@ -5,6 +5,7 @@ export class Walker
   {
     this.curPos = start;
     this.visited.push(start);
+    this.moveStack.push(start);
   }
 
   CurPos():Point
@@ -13,7 +14,8 @@ export class Walker
   }
   MoveStack():Point[]
   {
-    return Array.from(this.moveStack);
+    // return  this.moveStack;
+    return  Array.from(this.moveStack);
   }
   IsVisitedBefore(loc:Point):boolean
   {
@@ -74,11 +76,11 @@ export class Walker
     let p = new Point(this.curPos.x,this.curPos.y+d);
     this.MoveTo(p);
   }
-  private MoveTo(point:Point):void
+   MoveTo(loc:Point):void
   {
-    this.AddToVisited(point);
-    this.moveStack.push(point);
-    this.curPos = point;
+    this.AddToVisited(loc);
+    this.moveStack.push(loc);
+    this.curPos = loc;
   }
   private AddToVisited(point:Point):void
   {
