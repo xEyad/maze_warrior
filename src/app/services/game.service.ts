@@ -13,13 +13,11 @@ export class GameService {
 
   constructor()
   {
-    this.mazeWidth = 4;
-    this.mazeHeight = 5;
     let map =
     `s----
-    ---xx
-    -x--x
-    -x--g`;
+     ---xx
+     -x--x
+     -x--g`;
     this.world = new World(new Maze(map));
   }
   Talk():string
@@ -86,8 +84,14 @@ export class GameService {
   {
     return 1000/fps;
   }
-  readonly mazeWidth;
-  readonly mazeHeight;
+  get mazeWidth():number
+  {
+    return this.world.width;
+  };
+  get mazeHeight():number
+  {
+    return this.world.height;
+  };
   readonly world : World;
   private gameLoop =  null;
   private reachedGoal = false;
