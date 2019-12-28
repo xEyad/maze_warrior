@@ -13,14 +13,13 @@ export class BacktrackSolverService
   constructor(public game:GameService)
   {
     this.walker = this.game.world.walker;
-    this.moveStack.push(this.walker.CurPos());
-    let simulationSpeed = 25;
+    let simulationSpeed = 60;
     this.solvingSpeed = simulationSpeed;
     game.StartGameLoop(simulationSpeed);
   }
   Talk():any
   {
-    return this.GetAvailableTiles();
+    return this.GetAvailableTiles(this.walker.CurPos());
   }
   SolveInSteps():void
   {
@@ -33,26 +32,47 @@ export class BacktrackSolverService
   {
     if(this.game.IsGameFinished() || this.noMoreTracks)
         return;
+    let availableTiles =  this.GetAvailableTiles(this.walker.CurPos());
+    if(availableTiles.length > 0)
+    {
+      if(availableTiles.length>1)
+        this.branchingPointsIndicies.push(this.walker.MoveStack().length-1); //the index of the branching point
 
-      if(this.GetAvailableTiles().length > 0)
-      {
-        const loc = this.GetAvailableTiles()[0];
-        this.game.MoveWalker(this.DirFromPoint(loc));
-        this.moveStack.push(loc);
-      }
-      else if(!this.game.IsGameFinished())
-        this.BacktrackToBranchingPoint();
+      const loc = availableTiles[0];
+      this.game.MoveWalker(this.walker.DirFromPoint(loc));
+    }
+    else if(!this.game.IsGameFinished())
+      this.BacktrackToBranchingPointUNSAFE();
   }
+
   SolveGame():void
   {
     while(!(this.game.IsGameFinished() || this.noMoreTracks))
       this.SolveAStep();
   }
 
+  private BacktrackToBranchingPointUNSAFE():void
+  {
+    let branchingIndex = this.branchingPointsIndicies[this.branchingPointsIndicies.length-1];
+    let moveStack = this.walker.MoveStack();
+    let branchingPos = moveStack[branchingIndex];
+
+    //make sure that the current branching point still have branches otherwise remove it
+    if(this.GetAvailableTiles(branchingPos).length <= 1)
+      this.branchingPointsIndicies.pop();
+
+    if(branchingPos == undefined)
+    {
+      this.noMoreTracks = true;
+      return;
+    }
+    this.game.world.PutWalkerAt(branchingPos);
+  }
   private BacktrackToBranchingPoint():void
   {
-    let backtrackStack = Array.from(this.moveStack);
-    while(this.GetAvailableTiles().length == 0)
+    // let branchingIndex = this.branchingPoints[0];
+    let backtrackStack = this.walker.MoveStack();
+    while(this.GetAvailableTiles(this.walker.CurPos()).length == 0)
     {
       let prevPos = backtrackStack.pop();
       if(prevPos.Equals(this.walker.CurPos()))
@@ -62,26 +82,12 @@ export class BacktrackSolverService
         this.noMoreTracks = true;
         return;
       }
-      let dir = this.DirFromPoint(prevPos);
+      let dir = this.walker.DirFromPoint(prevPos);
       this.game.MoveWalker(dir);
     }
   }
-  private DirFromPoint(point:Point):Dir
+  private GetAvailableTiles(curPos) : Point[]
   {
-    if(point.x > this.walker.CurPos().x)
-      return Dir.right;
-    else if(point.x < this.walker.CurPos().x)
-      return Dir.left;
-    else if(point.y > this.walker.CurPos().y)
-      return Dir.down;
-    else if(point.y < this.walker.CurPos().y)
-      return Dir.up;
-    else
-      throw `can't determine direction of point ${point} relative to the walker`;
-  }
-  private GetAvailableTiles() : Point[]
-  {
-    let curPos = this.walker.CurPos();
     let left = new Point(curPos.x-1,curPos.y);
     let right = new Point(curPos.x+1,curPos.y);
     let up = new Point(curPos.x,curPos.y-1);
@@ -109,7 +115,7 @@ export class BacktrackSolverService
       )
   }
   private noMoreTracks:boolean = false;
-  private moveStack:Point[] = [];
+  private branchingPointsIndicies:number[]=[];
   private walker:Walker;
   private solvingSpeed;
 }
