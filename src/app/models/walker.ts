@@ -13,7 +13,7 @@ export class Walker
   }
   MoveStack():Point[]
   {
-    return this.moveStack;
+    return Array.from(this.moveStack);
   }
   IsVisitedBefore(loc:Point):boolean
   {
@@ -50,6 +50,19 @@ export class Walker
     }
 
 
+  }
+  DirFromPoint(point:Point):Dir
+  {
+    if(point.x > this.CurPos().x)
+      return Dir.right;
+    else if(point.x < this.CurPos().x)
+      return Dir.left;
+    else if(point.y > this.CurPos().y)
+      return Dir.down;
+    else if(point.y < this.CurPos().y)
+      return Dir.up;
+    else
+      throw `can't determine direction of point ${point} relative to the walker`;
   }
   private MoveXBy(d:number)
   {
