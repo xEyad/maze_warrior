@@ -57,6 +57,8 @@ export class GameService {
     {
       this.UpdateModel();
       this.Draw();
+      if(this.IsGameFinished())
+        return;
     }, this.MsFromFPS(fps));
   }
 
