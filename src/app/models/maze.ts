@@ -91,7 +91,7 @@ export class Maze implements iDrawable
         else if (tile.IsGoal())
           mazeTxt+='G';
         else if (tile.state == State.open)
-          mazeTxt+='-';
+          mazeTxt+=' ';
         else if (tile.state == State.blocked)
           mazeTxt+='x';
       }
