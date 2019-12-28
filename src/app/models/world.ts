@@ -28,6 +28,17 @@ export class World implements iDrawable
       this.maze.PutWalkerAt(this.walkerPos);
     }
   }
+  ///DELETE AFTER TESTING
+  PutWalkerAt(loc:Point):void
+  {
+    if((loc.x >= 0 && loc.x < this.maze.width) &&
+    (loc.y >= 0 && loc.y < this.maze.height) &&
+    this.maze.GetTileState(loc) != State.blocked)
+    {
+      this.maze.PutWalkerAt(loc);
+      this.walker.MoveTo(loc);
+    }
+  }
   TileState(location:Point):State
   {
     return this.maze.GetTileState(location);
@@ -51,6 +62,7 @@ export class World implements iDrawable
   }
   private isNewPosValid(newPos:Point) : boolean
   {
+    let state = this.maze.GetTileState(newPos) != State.blocked
     return  (
       Point.TotalDifference(this.walkerPos,newPos) == 1 &&
       (newPos.x >= 0 && newPos.x < this.maze.width) &&
