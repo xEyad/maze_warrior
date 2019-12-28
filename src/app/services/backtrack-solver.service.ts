@@ -14,49 +14,54 @@ export class BacktrackSolverService
   {
     this.walker = this.game.world.walker;
     this.moveStack.push(this.walker.CurPos());
-    game.StartGameLoop();
+    let simulationSpeed = 25;
+    this.solvingSpeed = simulationSpeed;
+    game.StartGameLoop(simulationSpeed);
   }
   Talk():any
   {
     return this.GetAvailableTiles();
   }
-  SolveInSteps(solvingSpeed:number):void
+  SolveInSteps():void
   {
     setInterval(()=>{
-      if(!this.game.IsGameFinished())
-    {
+      this.SolveAStep();
+    },1000/this.solvingSpeed)
+
+  }
+  SolveAStep()
+  {
+    if(this.game.IsGameFinished() || this.noMoreTracks)
+        return;
+
       if(this.GetAvailableTiles().length > 0)
       {
         const loc = this.GetAvailableTiles()[0];
         this.game.MoveWalker(this.DirFromPoint(loc));
         this.moveStack.push(loc);
       }
-      if(!this.game.IsGameFinished())
+      else if(!this.game.IsGameFinished())
         this.BacktrackToBranchingPoint();
-    }
-    },solvingSpeed)
-
   }
   SolveGame():void
   {
-    while(!this.game.IsGameFinished())
-    {
-      while(this.GetAvailableTiles().length > 0)
-      {
-        const loc = this.GetAvailableTiles()[0];
-        this.game.MoveWalker(this.DirFromPoint(loc));
-        this.moveStack.push(loc);
-      }
-      if(!this.game.IsGameFinished())
-        this.BacktrackToBranchingPoint();
-    }
-
+    while(!(this.game.IsGameFinished() || this.noMoreTracks))
+      this.SolveAStep();
   }
+
   private BacktrackToBranchingPoint():void
   {
+    let backtrackStack = Array.from(this.moveStack);
     while(this.GetAvailableTiles().length == 0)
     {
-      let prevPos = this.moveStack.pop();
+      let prevPos = backtrackStack.pop();
+      if(prevPos.Equals(this.walker.CurPos()))
+        prevPos = backtrackStack.pop();
+      if(prevPos == undefined)
+      {
+        this.noMoreTracks = true;
+        return;
+      }
       let dir = this.DirFromPoint(prevPos);
       this.game.MoveWalker(dir);
     }
@@ -103,6 +108,8 @@ export class BacktrackSolverService
       !this.walker.IsVisitedBefore(loc)
       )
   }
+  private noMoreTracks:boolean = false;
   private moveStack:Point[] = [];
   private walker:Walker;
+  private solvingSpeed;
 }
