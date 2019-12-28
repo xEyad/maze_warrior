@@ -13,12 +13,7 @@ export class GameService {
 
   constructor()
   {
-    let map =
-    `s----
-     ---xx
-     -x--x
-     -x--g`;
-    this.world = new World(new Maze(map));
+    this.world = new World(new Maze(this.map));
   }
   Talk():string
   {
@@ -56,13 +51,13 @@ export class GameService {
     if(!this.IsGameFinished())
       this.world.MoveWalker(dir);
   }
-  StartGameLoop()
+  StartGameLoop(fps)
   {
     this.gameLoop = setInterval(() =>
     {
       this.UpdateModel();
       this.Draw();
-    }, this.MsFromFPS(5));
+    }, this.MsFromFPS(fps));
   }
 
 
@@ -95,4 +90,26 @@ export class GameService {
   readonly world : World;
   private gameLoop =  null;
   private reachedGoal = false;
+
+  private map = `+--+--+--+--+--+--+--+--+--+--+
+S     |              |     |  |
++--+  +  +--+--+--+  +  +  +  +
+|     |     |     |  |  |  |  |
++  +--+  +--+  +  +  +--+  +  +
+|     |  |     |  |  |     |  |
++--+  +  +  +--+  +  +  +--+  +
+|     |     |     |     |     |
++  +--+--+--+--+  +--+--+--+  +
+|           |                 |
++--+--+--+  +  +  +--+--+--+  +
+|     |  |     |  |     |     |
++--+  +  +--+--+  +  +  +--+  +
+|     |           |  |        |
++  +--+--+  +--+--+  +--+--+--+
+|           |        |  |     |
++--+--+--+--+  +--+--+  +  +  +
+|           |     |        |  |
++  +--+--+  +  +  +--+  +--+  +
+|        |     |        |     G
++--+--+--+--+--+--+--+--+--+--+`
 }
