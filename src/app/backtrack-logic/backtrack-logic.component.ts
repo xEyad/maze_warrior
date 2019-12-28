@@ -13,7 +13,7 @@ export class BacktrackLogicComponent implements OnInit {
 
   constructor(public game:GameService,public solver:BacktrackSolverService)
   {
-    solver.SolveInSteps(1000/1);
+    solver.SolveInSteps();
   }
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.game.MoveWalkerByKbd(event);
