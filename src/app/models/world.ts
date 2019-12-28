@@ -41,7 +41,14 @@ export class World implements iDrawable
   get walkerPos() : Point {
     return  this.walker.CurPos();
   }
-
+  get width():number
+  {
+    return this.maze.width;
+  }
+  get height():number
+  {
+    return this.maze.height;
+  }
   private isNewPosValid(newPos:Point) : boolean
   {
     return  (
