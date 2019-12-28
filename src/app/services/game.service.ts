@@ -58,7 +58,7 @@ export class GameService {
       this.UpdateModel();
       this.Draw();
       if(this.IsGameFinished())
-        return;
+        clearInterval(this.gameLoop);
     }, this.MsFromFPS(fps));
   }
 
@@ -68,6 +68,7 @@ export class GameService {
     if(this.world.walkerPos.Equals(this.world.goalPos))
       this.reachedGoal = true;
   }
+  //draw on 'something' and expose it to the hosting component to render it
   private Draw():void
   {
     console.clear();

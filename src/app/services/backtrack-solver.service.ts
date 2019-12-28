@@ -23,8 +23,10 @@ export class BacktrackSolverService
   }
   SolveInSteps():void
   {
-    setInterval(()=>{
+    var loop = setInterval(()=>{
       this.SolveAStep();
+      if(this.game.IsGameFinished() || this.noMoreTracks)
+        clearInterval(loop);
     },1000/this.solvingSpeed)
 
   }
@@ -47,7 +49,7 @@ export class BacktrackSolverService
 
   SolveGame():void
   {
-    while(!(this.game.IsGameFinished() || this.noMoreTracks))
+    while(!(this.game.world.walkerPos.Equals(this.game.world.goalPos) || this.noMoreTracks))
       this.SolveAStep();
   }
 
@@ -68,24 +70,7 @@ export class BacktrackSolverService
     }
     this.game.world.PutWalkerAt(branchingPos);
   }
-  private BacktrackToBranchingPoint():void
-  {
-    // let branchingIndex = this.branchingPoints[0];
-    let backtrackStack = this.walker.MoveStack();
-    while(this.GetAvailableTiles(this.walker.CurPos()).length == 0)
-    {
-      let prevPos = backtrackStack.pop();
-      if(prevPos.Equals(this.walker.CurPos()))
-        prevPos = backtrackStack.pop();
-      if(prevPos == undefined)
-      {
-        this.noMoreTracks = true;
-        return;
-      }
-      let dir = this.walker.DirFromPoint(prevPos);
-      this.game.MoveWalker(dir);
-    }
-  }
+
   private GetAvailableTiles(curPos) : Point[]
   {
     let left = new Point(curPos.x-1,curPos.y);
