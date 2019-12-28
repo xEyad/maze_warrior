@@ -38,23 +38,23 @@ export class Maze implements iDrawable
       let x = tileIndex % (this.width);
       let y = Math.floor(tileIndex / (this.width));
       let loc = new Point(x,y);
-      if(char == 's')
+      if(char == 'S'||char == 's')
       {
         this.start = this.TileAt(loc);
         tileIndex++;
       }
-      else if(char == 'x')
+      else if(char == '+' || char == '-' || char == '|')
       {
         this.SetTileState(loc,State.blocked);
         tileIndex++;
       }
-      else if(char == 'g')
+      else if(char == 'G'||char == 'g')
       {
         this.goal = this.TileAt(loc);
         this.goal.SetAsGoal();
         tileIndex++;
       }
-      else if(char=='-')
+      else if(char==' ')
         tileIndex++;
     }
     this.walker = this.start;
