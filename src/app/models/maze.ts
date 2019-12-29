@@ -51,7 +51,7 @@ export class Maze implements iDrawable
       else if(char == 'G'||char == 'g')
       {
         this.goal = this.TileAt(loc);
-        this.goal.SetAsGoal();
+        this.goal.isGoal = true;
         tileIndex++;
       }
       else if(char==' ')
@@ -88,7 +88,7 @@ export class Maze implements iDrawable
           mazeTxt+='W';
         else if(tile ==  this.start)
           mazeTxt+='S';
-        else if (tile.IsGoal())
+        else if (tile.isGoal)
           mazeTxt+='G';
         else if (tile.state == State.open)
           mazeTxt+=' ';
@@ -127,7 +127,7 @@ export class Maze implements iDrawable
           mazeTxt+='W';
         else if(tile ==  this.start)
           mazeTxt+='S';
-        else if (tile.IsGoal())
+        else if (tile.isGoal)
           mazeTxt+='G';
         else if (tile.state == State.open)
           mazeTxt+='-';

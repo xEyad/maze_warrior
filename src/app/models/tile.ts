@@ -5,30 +5,51 @@ export class Tile
   constructor(state:State,coordinate:Point)
   {
     this.state = state;
-    this.coordinate=coordinate;
+    this._coordinate=coordinate;
     this.hasWalker = false;
     this.isGoal = false;
   }
-  SetAsGoal() : void
+  set isGoal(val:boolean)
   {
-    if(this.state == State.blocked)
+    if(val==true && this.state == State.blocked)
       throw `Can't set tile at ${this.coordinate} to goal because it's blocked`;
-    this.isGoal = true;
+    this._isGoal = val;
   }
-  RemoveGoal() : void
+  get isGoal() : boolean
   {
-    this.isGoal = false;
+    return this._isGoal;
   }
-  IsGoal() : boolean {
-    return this.isGoal
+  set state(state:State)
+  {
+    if(this._isGoal && state == State.blocked)
+      throw `Can't set state of tile ${this.coordinate} to ${State} because it has goal`;
+    this._state = state;
   }
-  state:State;
-  readonly coordinate:Point;
-  hasWalker:boolean;
-  private isGoal:boolean;
+  get state() : Readonly<State>
+  {
+    return this._state;
+  }
+  set hasWalker(val:boolean)
+  {
+    if(val==true && this.state == State.blocked)
+      throw `Can't Put walker at tile ${this.coordinate} because it's blocked`;
+    this._hasWalker = val;
+  }
+  get hasWalker(): Readonly<boolean>
+  {
+    return this._hasWalker;
+  }
+  get coordinate():Readonly<Point>
+  {
+    return this._coordinate;
+  }
+  private _state:State;
+  private _coordinate:Point;
+  private _hasWalker:boolean;
+  private _isGoal:boolean;
 }
 export enum State
 {
-  open,
-  blocked,
+  open = "open",
+  blocked = "blocked",
 }
