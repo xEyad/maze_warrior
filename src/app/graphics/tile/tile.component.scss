@@ -1,0 +1,25 @@
+div
+{
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+.open
+{
+}
+.blocked
+{
+  color: black;
+  border: solid 5px black;
+  background-color: black;
+}
+.goal
+{
+  color: green;
+  border: solid 5px green;
+}
+.walker
+{
+  color: yellow;
+  border: solid 5px yellow;
+}

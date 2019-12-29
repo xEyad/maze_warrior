@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BacktrackLogicComponent } from './backtrack-logic/backtrack-logic.component';
 import { GameService } from './services/game.service';
+import { TileComponent } from './graphics/tile/tile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BacktrackLogicComponent
+    BacktrackLogicComponent,
+    TileComponent
   ],
   imports: [
     BrowserModule,
