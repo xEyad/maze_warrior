@@ -12,7 +12,7 @@ export class BacktrackSolverService
 
   constructor(public game:GameService)
   {
-    this.walker = this.game.world.walker;
+    this.walker = this.game.walker;
     let simulationSpeed = 60;
     this.solvingSpeed = simulationSpeed;
     this.gameLoopRef = game.StartGameLoop(simulationSpeed);
@@ -23,7 +23,7 @@ export class BacktrackSolverService
   }
   SolveGame():void
   {
-    while(!(this.game.world.walkerPos.Equals(this.game.world.goalPos) || this.noMoreTracks))
+    while(!(this.game.World().walkerPos.Equals(this.game.World().goalPos) || this.noMoreTracks))
       this.SolveAStep();
   }
   SolveInSteps():void
@@ -72,7 +72,7 @@ export class BacktrackSolverService
     if(this.GetAvailableTilesAround(branchingPos).length <= 1)
       this.branchingPointsIndicies.pop();
 
-    this.game.world.PutWalkerAt(branchingPos);
+    this.game.PutWalkerAt(branchingPos);
   }
 
   private GetAvailableTilesAround(curPos) : Point[]
@@ -105,7 +105,7 @@ export class BacktrackSolverService
   }
   private noMoreTracks:boolean = false;
   private branchingPointsIndicies:number[]=[];
-  private walker:Walker;
+  private walker:Readonly<Walker>;
   private solvingSpeed;
   private readonly gameLoopRef:NodeJS.Timer;
 }

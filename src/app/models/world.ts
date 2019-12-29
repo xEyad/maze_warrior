@@ -4,6 +4,7 @@ import { Maze } from './maze';
 import { Point } from './utility/point';
 
 ///only 1 per program
+///responsible for keeping walker and maze always in SYNC
 export class World implements iDrawable
 {
   constructor(maze:Maze)
@@ -22,18 +23,15 @@ export class World implements iDrawable
   MoveWalker(dir:Dir)
   {
     let newPos = this.getPosForDir(dir);
-    if(this.isNewPosValid(newPos))
+    if(this.isNewPosValid(newPos) && Point.TotalDifference(this.walkerPos,newPos) == 1)
     {
       this.walker.Move(dir);
       this.maze.PutWalkerAt(this.walkerPos);
     }
   }
-  ///DELETE AFTER TESTING
   PutWalkerAt(loc:Point):void
   {
-    if((loc.x >= 0 && loc.x < this.maze.width) &&
-    (loc.y >= 0 && loc.y < this.maze.height) &&
-    this.maze.GetTileState(loc) != State.blocked)
+    if(this.isNewPosValid(loc))
     {
       this.maze.PutWalkerAt(loc);
       this.walker.MoveTo(loc);
@@ -63,9 +61,7 @@ export class World implements iDrawable
   }
   private isNewPosValid(newPos:Point) : boolean
   {
-    let state = this.maze.GetTileState(newPos) != State.blocked
     return  (
-      Point.TotalDifference(this.walkerPos,newPos) == 1 &&
       (newPos.x >= 0 && newPos.x < this.maze.width) &&
       (newPos.y >= 0 && newPos.y < this.maze.height) &&
       this.maze.GetTileState(newPos) != State.blocked
@@ -77,16 +73,12 @@ export class World implements iDrawable
     {
       case Dir.right:
         return new Point(this.walkerPos.x+1,this.walkerPos.y);
-        break;
       case Dir.left:
         return new Point(this.walkerPos.x-1,this.walkerPos.y);
-        break;
       case Dir.down:
         return new Point(this.walkerPos.x,this.walkerPos.y+1);
-        break;
       case Dir.up:
         return new Point(this.walkerPos.x,this.walkerPos.y-1);
-        break;
       default:
         break;
     }

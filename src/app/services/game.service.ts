@@ -1,4 +1,4 @@
-import { Dir } from './../models/walker';
+import { Dir, Walker } from './../models/walker';
 import { State } from './../models/tile';
 import { Maze } from './../models/maze';
 import { World } from './../models/world';
@@ -8,7 +8,7 @@ import { Point } from '../models/utility/point';
   providedIn: 'root'
 })
 
-///serves as the MAIN entry point of game model
+///serves as the MAIN entry point of game models and sets the game rules
 export class GameService {
 
   constructor()
@@ -51,6 +51,11 @@ export class GameService {
     if(!this.IsGameFinished())
       this.world.MoveWalker(dir);
   }
+  PutWalkerAt(loc:Point) : void
+  {
+    if(!this.IsGameFinished())
+      this.world.PutWalkerAt(loc);
+  }
   StartGameLoop(fps):Readonly<NodeJS.Timer>
   {
     this.gameLoop = setInterval(() =>
@@ -62,8 +67,22 @@ export class GameService {
     }, this.MsFromFPS(fps));
     return this.gameLoop;
   }
-
-
+  World():Readonly<World>
+  {
+    return this.world;
+  }
+  get mazeWidth():Readonly<number>
+  {
+    return this.world.width;
+  };
+  get mazeHeight():Readonly<number>
+  {
+    return this.world.height;
+  };
+  get walker() : Readonly<Walker>
+  {
+    return this.world.walker;
+  }
   private UpdateModel():void
   {
     if(this.world.walkerPos.Equals(this.world.goalPos))
@@ -83,15 +102,9 @@ export class GameService {
   {
     return 1000/fps;
   }
-  get mazeWidth():Readonly<number>
-  {
-    return this.world.width;
-  };
-  get mazeHeight():Readonly<number>
-  {
-    return this.world.height;
-  };
-  readonly world : World;
+
+
+  private world : World;
   private gameLoop =  null;
   private reachedGoal = false;
 
