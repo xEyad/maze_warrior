@@ -12,10 +12,10 @@ export class Walker
   {
     return this.curPos;
   }
-  MoveStack():Point[]
+  MoveStack():Readonly<Point>[]
   {
     // return  this.moveStack;
-    return  Array.from(this.moveStack);
+    return  this.moveStack;
   }
   IsVisitedBefore(loc:Point):boolean
   {
