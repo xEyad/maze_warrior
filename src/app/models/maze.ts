@@ -3,8 +3,8 @@ import {Point} from './utility/point';
 
 export class Maze implements iDrawable
 {
-  readonly goal:Tile;
-  readonly start:Tile;
+  private goal:Tile;
+  private start:Tile;
   private walker:Tile;
   readonly width:number;
   readonly height:number;
@@ -59,19 +59,19 @@ export class Maze implements iDrawable
     }
     this.walker = this.start;
   }
-  public get goalTile() : Tile
+  get goalTile() : Readonly<Tile>
   {
     return this.goal;
   }
-  public get startTile() : Tile
+  get startTile() : Readonly<Tile>
   {
     return this.start;
   }
-  public get walkerTile() : Tile
+  get walkerTile() : Readonly<Tile>
   {
     return this.walker;
   }
-  public get size() : number {
+  get size() : number {
     return this.width*this.height;
   }
 
@@ -110,7 +110,7 @@ export class Maze implements iDrawable
   {
     this.TileAt(tileLocation).state = newState;
   }
-  GetTileState(tileLocation:Point) : State
+  GetTileState(tileLocation:Point) : Readonly<State>
   {
     return this.TileAt(tileLocation).state;
   }
@@ -140,7 +140,7 @@ export class Maze implements iDrawable
   }
   isInsideMaze(point:Point) : boolean
   {
-    return this.pointTo1D(point)<this.size;
+    return this.pointTo1D(point) < this.size;
   }
   pointTo1D(point:Point) : number
   {
@@ -150,7 +150,7 @@ export class Maze implements iDrawable
   {
     return y*this.width+x;
   }
-  private TileAt(point:Point) :Tile
+  private TileAt(point:Point) : Tile
   {
     if(!this.isInsideMaze(point))
       throw `point ${point} is outside of the maze!`;

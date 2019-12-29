@@ -39,24 +39,25 @@ export class World implements iDrawable
       this.walker.MoveTo(loc);
     }
   }
-  TileState(location:Point):State
+  TileState(location:Point): Readonly<State>
   {
     return this.maze.GetTileState(location);
   }
-  get goalPos() : Point {
+  get goalPos() : Readonly<Point>  {
     return  this.maze.goalTile.coordinate;
   }
-  get startPos() : Point {
+  get startPos() : Readonly<Point>  {
     return  this.maze.startTile.coordinate;
   }
-  get walkerPos() : Point {
+  get walkerPos() : Readonly<Point>
+  {
     return  this.walker.CurPos();
   }
-  get width():number
+  get width(): Readonly<number>
   {
     return this.maze.width;
   }
-  get height():number
+  get height(): Readonly<number>
   {
     return this.maze.height;
   }

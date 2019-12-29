@@ -8,7 +8,7 @@ export class Walker
     this.moveStack.push(start);
   }
 
-  CurPos():Point
+  CurPos():Readonly<Point>
   {
     return this.curPos;
   }
@@ -27,7 +27,7 @@ export class Walker
     }
     return false;
   }
-  VisitedLocations():Point[]
+  VisitedLocations():ReadonlyArray<Point>
   {
     return this.visited;
   }
@@ -66,6 +66,12 @@ export class Walker
     else
       throw `can't determine direction of point ${point} relative to the walker`;
   }
+  MoveTo(loc:Point):void
+  {
+    this.AddToVisited(loc);
+    this.moveStack.push(loc);
+    this.curPos = loc;
+  }
   private MoveXBy(d:number)
   {
     let p = new Point(this.curPos.x+d,this.curPos.y);
@@ -75,12 +81,6 @@ export class Walker
   {
     let p = new Point(this.curPos.x,this.curPos.y+d);
     this.MoveTo(p);
-  }
-   MoveTo(loc:Point):void
-  {
-    this.AddToVisited(loc);
-    this.moveStack.push(loc);
-    this.curPos = loc;
   }
   private AddToVisited(point:Point):void
   {

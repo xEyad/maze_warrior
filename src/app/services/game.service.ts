@@ -24,11 +24,11 @@ export class GameService {
     return loc.x>=0 && loc.x < this.mazeWidth &&
            loc.y>=0 && loc.y < this.mazeHeight
   }
-  TileState(location:Point):State
+  TileState(location:Point): Readonly<State>
   {
     return this.world.TileState(location);
   }
-  IsGameFinished() : boolean
+  IsGameFinished() : Readonly<boolean>
   {
     return this.reachedGoal;
   }
@@ -51,7 +51,7 @@ export class GameService {
     if(!this.IsGameFinished())
       this.world.MoveWalker(dir);
   }
-  StartGameLoop(fps):NodeJS.Timer
+  StartGameLoop(fps):Readonly<NodeJS.Timer>
   {
     this.gameLoop = setInterval(() =>
     {
@@ -83,11 +83,11 @@ export class GameService {
   {
     return 1000/fps;
   }
-  get mazeWidth():number
+  get mazeWidth():Readonly<number>
   {
     return this.world.width;
   };
-  get mazeHeight():number
+  get mazeHeight():Readonly<number>
   {
     return this.world.height;
   };
