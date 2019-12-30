@@ -1,4 +1,5 @@
-$size: 30px;
+$size: 20px;
+$borderWidth: 1px;
 div
 {
   display: flex;
@@ -9,22 +10,23 @@ div
 }
 .open
 {
+  border: solid $borderWidth;
 }
 .blocked
 {
   color: black;
-  border: solid 5px black;
+  border: solid $borderWidth black;
   background-color: black;
 }
 .goal
 {
   color: green;
-  border: solid 5px green;
+  border: solid $borderWidth green;
 }
 .walker
 {
   color: yellow;
-  border: solid 5px yellow;
+  border: solid $borderWidth yellow;
 }
 
 
