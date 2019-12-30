@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <div *ngFor="let h of height;let y = index">
+    <div class="e-row">
+      <div *ngFor="let w of width;let x = index">
+        <gfx-tile [tile]="GetTileAt(x,y)"></gfx-tile>
+      </div>
+    </div>
+  </div>
+</div>
