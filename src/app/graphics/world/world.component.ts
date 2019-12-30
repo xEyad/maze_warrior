@@ -1,15 +1,15 @@
-import { World } from './../../models/world';
-import { Tile } from './../../models/tile';
+import { World } from '../../models/world';
+import { Tile } from '../../models/tile';
 import { Component, OnInit, Input } from '@angular/core';
 import { Point } from 'src/app/models/utility/point';
 import { BacktrackSolverService } from 'src/app/services/backtrack-solver.service';
 
 @Component({
-  selector: 'gfx-maze',
-  templateUrl: './maze.component.html',
-  styleUrls: ['./maze.component.scss']
+  selector: 'gfx-world',
+  templateUrl: './world.component.html',
+  styleUrls: ['./world.component.scss']
 })
-export class MazeComponent implements OnInit {
+export class WorldComponent implements OnInit {
 
   @Input() world : Readonly<World>;
   @Input() indexedLocations:Readonly<Point>[];
