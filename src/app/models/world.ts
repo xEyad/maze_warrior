@@ -59,6 +59,10 @@ export class World implements iDrawable
   {
     return this.maze.height;
   }
+  Maze(): Readonly<Maze>
+  {
+    return this.maze;
+  }
   private isNewPosValid(newPos:Point) : boolean
   {
     return  (

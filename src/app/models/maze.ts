@@ -74,7 +74,10 @@ export class Maze implements iDrawable
   get size() : number {
     return this.width*this.height;
   }
-
+  get tiles() :Readonly<Tile>[]
+  {
+    return this.maze;
+  }
   Talk():string
   {
     let mazeTxt = '';
