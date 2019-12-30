@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class TileComponent implements OnInit {
 
-  @Input() tile : Tile;
+  @Input() tile : Readonly<Tile>;
   cssClass:string;
   constructor() { }
 
