@@ -1,4 +1,4 @@
-import { State, Tile } from './../../models/tile';
+import { Tile } from './../../models/tile';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -9,18 +9,16 @@ import { Component, OnInit, Input } from '@angular/core';
 export class TileComponent implements OnInit {
 
   @Input() tile : Readonly<Tile>;
-  cssClass:string;
   constructor() { }
 
   ngOnInit()
   {
-    this.cssClass = "nothing";
-    if(this.tile.hasWalker)
-      this.cssClass = "walker";
-    else if(this.tile.isGoal)
-      this.cssClass = "goal";
-    else
-      this.cssClass = this.tile.state;
   }
-
+  GetCssClass() : string
+  {
+    if(this.tile.isGoal)
+      return "goal";
+    else
+      return this.tile.state;
+  }
 }
