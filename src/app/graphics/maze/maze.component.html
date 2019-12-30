@@ -2,7 +2,9 @@
   <div *ngFor="let h of height;let y = index">
     <div class="e-row">
       <div *ngFor="let w of width;let x = index">
-        <gfx-tile [tile]="GetTileAt(x,y)"></gfx-tile>
+        <gfx-tile [tile]="GetTileAt(x,y)">
+          <gfx-mark [isStart]="IsStart(x,y)"></gfx-mark>
+        </gfx-tile>
       </div>
     </div>
   </div>
