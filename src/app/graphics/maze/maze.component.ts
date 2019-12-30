@@ -1,7 +1,8 @@
 import { World } from './../../models/world';
 import { Tile } from './../../models/tile';
 import { Component, OnInit, Input } from '@angular/core';
-import { Maze } from 'src/app/models/maze';
+import { Point } from 'src/app/models/utility/point';
+import { BacktrackSolverService } from 'src/app/services/backtrack-solver.service';
 
 @Component({
   selector: 'gfx-maze',
@@ -11,6 +12,9 @@ import { Maze } from 'src/app/models/maze';
 export class MazeComponent implements OnInit {
 
   @Input() world : Readonly<World>;
+  @Input() indexedLocations:Readonly<Point>[];
+  @Input() solver:Readonly<BacktrackSolverService>;
+
   tiles:Readonly<Tile>[];
   width:Array<number>;
   height:Array<number>;
@@ -28,5 +32,14 @@ export class MazeComponent implements OnInit {
   IsStart(x:number,y:number) : boolean
   {
     return this.world.startPos.Equals(this.GetTileAt(x,y).coordinate);
+  }
+  IsIndexed(x:number,y:number) : boolean
+  {
+    for (const p of this.solver.GetIndexedLocations())
+    {
+      if(p.Equals(this.GetTileAt(x,y).coordinate))
+        return true;
+    }
+    return false;
   }
 }
