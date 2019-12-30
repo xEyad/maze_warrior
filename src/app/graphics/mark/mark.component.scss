@@ -1,8 +1,13 @@
 :host
 {
   align-self: center;
-  height: 15px;
-  width: 15px;
-  background-color: red;
-  border-radius: 50%;
+
+  div.startPos
+  {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: green;
+  }
+
 }

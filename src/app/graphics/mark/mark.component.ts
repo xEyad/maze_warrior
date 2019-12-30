@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'gfx-mark',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MarkComponent implements OnInit {
 
+  @Input() isStart: boolean = false;
+  cssClass:string = "";
   constructor() { }
 
   ngOnInit() {
+
+    if(this.isStart)
+      this.cssClass = "startPos";
   }
 
 }
