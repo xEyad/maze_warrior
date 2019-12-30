@@ -1,7 +1,6 @@
 import { GameService } from './../services/game.service';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { BacktrackSolverService } from '../services/backtrack-solver.service';
-import { Dir } from '../models/walker';
 
 @Component({
   selector: 'app-backtrack-logic',
@@ -10,16 +9,9 @@ import { Dir } from '../models/walker';
 })
 export class BacktrackLogicComponent implements OnInit {
 
-
   constructor(public game:GameService,public solver:BacktrackSolverService)
   {
     solver.SolveInSteps();
-  }
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    this.game.MoveWalkerByKbd(event);
-  }
-
-  @HostListener('document:keyup', ['$event']) onKeyupHandler(event: KeyboardEvent) {
   }
   ngOnInit()
   {
