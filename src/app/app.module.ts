@@ -7,15 +7,19 @@ import { BacktrackLogicComponent } from './backtrack-logic/backtrack-logic.compo
 import { GameService } from './services/game.service';
 import { TileComponent } from './graphics/tile/tile.component';
 import { MarkComponent } from './graphics/mark/mark.component';
+import { MazeComponent } from './graphics/maze/maze.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
   declarations: [
     AppComponent,
     BacktrackLogicComponent,
     TileComponent,
-    MarkComponent
+    MarkComponent,
+    MazeComponent
   ],
   imports: [
+    MDBBootstrapModule.forRoot(),
     BrowserModule,
     AppRoutingModule
   ],
