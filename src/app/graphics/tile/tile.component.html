@@ -1,2 +1,3 @@
-<div [class]="cssClass"> </div>
-<p>{{cssClass}}</p>
+<div [class]="cssClass">
+  <ng-content *ngIf="tile.state!='blocked'" select="gfx-mark"></ng-content>
+</div>
