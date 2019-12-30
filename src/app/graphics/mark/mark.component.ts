@@ -8,13 +8,17 @@ import { Component, OnInit, Input } from '@angular/core';
 export class MarkComponent implements OnInit {
 
   @Input() isStart: boolean = false;
-  cssClass:string = "";
+  @Input() isIndexed:boolean = false;
   constructor() { }
 
-  ngOnInit() {
-
-    if(this.isStart)
-      this.cssClass = "startPos";
+  ngOnInit()   {
   }
 
+  GetCssClass():string
+  {
+    if(this.isStart)
+      return "startPos";
+    if(this.isIndexed)
+      return "indexed";
+  }
 }
