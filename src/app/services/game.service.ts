@@ -56,16 +56,10 @@ export class GameService {
     if(!this.IsGameFinished())
       this.world.PutWalkerAt(loc);
   }
-  StartGameLoop(fps):Readonly<NodeJS.Timer>
+  DoGameStep()
   {
-    this.gameLoop = setInterval(() =>
-    {
-      this.UpdateModel();
-      this.Draw();
-      if(this.IsGameFinished())
-        clearInterval(this.gameLoop);
-    }, this.MsFromFPS(fps));
-    return this.gameLoop;
+    this.UpdateModel();
+    this.Draw();
   }
   World():Readonly<World>
   {
@@ -105,7 +99,6 @@ export class GameService {
 
 
   private world : World;
-  private gameLoop =  null;
   private reachedGoal = false;
 
   private map3 = `+--+--+--+--+--+--+--+--+--+--+
@@ -129,7 +122,7 @@ export class GameService {
 +  +--+--+  +  +  +--+  +--+  +
 |        |     |        |    |G
 +--+--+--+--+--+--+--+--+--+--+`
-  private map = `+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+  private map = `S--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
     |     |                 |     |  |              |       |
 +  +--+  +  +  +--+--+--+  +  +  +  +  +  +--+--+  +  +--+  +
 |  |     |  |        |        |     |  |  |     |  |     |  |
@@ -150,7 +143,7 @@ export class GameService {
 +  +--+--+--+  +--+--+--+--+--+--+  +  +  +  +--+--+--+  +  +
 |     |        |     |     |        |  |     |        |  |  |
 +--+  +--+--+--+  +  +  +  +--+--+--+--+  +--+  +  +  +  +  +
-|     |        |  |     |                   S   |  |     |  |
+|     |        |  |     |                       |  |     |  |
 +  +--+  +--+  +--+  +--+--+--+--+--+--+  +--+--+--+--+--+  +
 |     |     |     |  |     |        |     |  |              |
 +  +--+--+  +--+  +  +  +--+  +  +  +  +--+  +  +--+--+--+--+
