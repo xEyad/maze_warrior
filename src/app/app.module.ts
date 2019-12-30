@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BacktrackLogicComponent } from './backtrack-logic/backtrack-logic.component';
 import { GameService } from './services/game.service';
 import { TileComponent } from './graphics/tile/tile.component';
+import { MarkComponent } from './graphics/mark/mark.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BacktrackLogicComponent,
-    TileComponent
+    TileComponent,
+    MarkComponent
   ],
   imports: [
     BrowserModule,
