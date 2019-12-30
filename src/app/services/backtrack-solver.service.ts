@@ -13,9 +13,8 @@ export class BacktrackSolverService
   constructor(public game:GameService)
   {
     this.walker = this.game.walker;
-    let simulationSpeed = 60;
+    let simulationSpeed = 10;
     this.solvingSpeed = simulationSpeed;
-    this.gameLoopRef = game.StartGameLoop(simulationSpeed);
   }
   Talk():any
   {
@@ -29,10 +28,10 @@ export class BacktrackSolverService
   SolveInSteps():void
   {
     var loop = setInterval(()=>{
+      this.game.DoGameStep();
       this.SolveAStep();
       if(this.game.IsGameFinished() || this.noMoreTracks)
       {
-        clearInterval(this.gameLoopRef);
         clearInterval(loop);
         console.log('NO SOLUTION FOUND');
       }
@@ -56,7 +55,14 @@ export class BacktrackSolverService
     else if(!this.game.IsGameFinished())
       this.BacktrackToBranchingPointUNSAFE();
   }
+  GetIndexedLocations() : Readonly<Point>[]
+  {
+    let indexedLocations:Point[] = [];
+    for (const index of this.branchingPointsIndicies)
+      indexedLocations.push(this.walker.MoveStack()[index]);
 
+    return indexedLocations;
+  }
   private BacktrackToBranchingPointUNSAFE():void
   {
     if(this.branchingPointsIndicies.length == 0)
@@ -107,5 +113,4 @@ export class BacktrackSolverService
   private branchingPointsIndicies:number[]=[];
   private walker:Readonly<Walker>;
   private solvingSpeed;
-  private readonly gameLoopRef:NodeJS.Timer;
 }
