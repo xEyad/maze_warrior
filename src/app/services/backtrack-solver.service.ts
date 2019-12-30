@@ -49,11 +49,11 @@ export class BacktrackSolverService
       if(availableTiles.length>1)
         this.branchingPointsIndicies.push(this.walker.MoveStack().length-1); //the index of the branching point
 
-      const loc = availableTiles[0];
+      const loc = availableTiles[this.GetRandomInt(0, availableTiles.length)];
       this.game.MoveWalker(this.walker.DirFromPoint(loc));
     }
     else if(!this.game.IsGameFinished())
-      this.BacktrackToBranchingPointUNSAFE();
+      this.BacktrackToBranchingPoint();
   }
   GetIndexedLocations() : Readonly<Point>[]
   {
@@ -63,7 +63,7 @@ export class BacktrackSolverService
 
     return indexedLocations;
   }
-  private BacktrackToBranchingPointUNSAFE():void
+  private BacktrackToBranchingPoint():void
   {
     if(this.branchingPointsIndicies.length == 0)
     {
@@ -108,6 +108,13 @@ export class BacktrackSolverService
       this.game.TileState(loc) == State.open &&
       !this.walker.IsVisitedBefore(loc)
       )
+  }
+
+  private GetRandomInt(min, max)
+  {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   }
   private noMoreTracks:boolean = false;
   private branchingPointsIndicies:number[]=[];
