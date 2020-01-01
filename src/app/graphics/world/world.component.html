@@ -1,11 +1,11 @@
 <div class="container-fluid">
-  <div *ngFor="let h of height;let y = index">
-    <div class="e-row">
-      <div *ngFor="let w of width;let x = index">
+  <ng-container *ngFor="let h of height;let y = index">
+    <div class="d-flex">
+      <ng-container *ngFor="let w of width;let x = index">
         <gfx-tile [tile]="GetTileAt(x,y)">
           <gfx-mark [isStart]="IsStart(x,y)" [isIndexed]="IsIndexed(x,y)"></gfx-mark>
         </gfx-tile>
-      </div>
+      </ng-container>
     </div>
-  </div>
+  </ng-container>
 </div>
