@@ -1,0 +1,25 @@
+<div class="container-fluid mb-4">
+  <div class="row d-flex">
+    <div class="col-2 ">
+      <h1>Maze warrior</h1>
+    </div>
+    <div class="col d-flex">
+      <div class="btn-group" mdbDropdown>
+        <button mdbDropdownToggle type="button" mdbBtn color="light" size="sm" class="dropdown-toggle waves-light"
+          mdbWavesEffect>
+          Algorithims
+        </button>
+
+        <div class="dropdown-menu dropdown-primary">
+          <a class="dropdown-item" href="#">Backtrack</a>
+          <a class="dropdown-item" href="#">Greedy</a>
+          <a class="dropdown-item" href="#">Djikstra</a>
+        </div>
+      </div>
+      <button type="button" mdbBtn color="light" size="sm" mdbWavesEffect>Maze construction</button>
+      <button type="button" mdbBtn color="light" size="sm" mdbWavesEffect (click)="startSimulation()">Start</button>
+      <button type="button" mdbBtn color="light" size="sm" mdbWavesEffect (click)="pauseSimulation()">Pause</button>
+      <!-- <button type="button" mdbBtn color="light" size="sm" mdbWavesEffect (click)="resetSimulation()">Reset</button> -->
+    </div>
+  </div>
+</div>

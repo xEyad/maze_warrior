@@ -12,6 +12,7 @@ import { WorldComponent } from './graphics/world/world.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { ControlPanelComponent } from './ui/control-panel/control-panel.component';
 import { HomePageComponent } from './ui/home-page/home-page.component';
+import { NavbarComponent } from './ui/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HomePageComponent } from './ui/home-page/home-page.component';
     MarkComponent,
     WorldComponent,
     ControlPanelComponent,
-    HomePageComponent
+    HomePageComponent,
+    NavbarComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
