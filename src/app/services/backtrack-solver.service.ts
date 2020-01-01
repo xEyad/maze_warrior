@@ -1,3 +1,4 @@
+import { GameMetaService } from './game-meta.service';
 import { State } from './../models/tile';
 import { Walker, Dir } from './../models/walker';
 import { GameService } from './game.service';
@@ -10,7 +11,7 @@ import { Point } from '../models/utility/point';
 export class BacktrackSolverService
 {
 
-  constructor(public game:GameService)
+  constructor(public game:GameService,public meta:GameMetaService)
   {
     this.walker = this.game.walker;
     let simulationSpeed = 10;
@@ -28,14 +29,16 @@ export class BacktrackSolverService
   SolveInSteps():void
   {
     var loop = setInterval(()=>{
-      this.game.DoGameStep();
-      this.SolveAStep();
-      if(this.game.IsGameFinished() || this.noMoreTracks)
+      if(this.meta.isSimulationRunning)
       {
-        clearInterval(loop);
-        console.log('NO SOLUTION FOUND');
+        this.game.DoGameStep();
+        this.SolveAStep();
+        if(this.game.IsGameFinished() || this.noMoreTracks || this.meta.isSimulationStopped)
+        {
+          clearInterval(loop);
+          this.meta.isSimulationStopped = false;
+        }
       }
-
     },1000/this.solvingSpeed)
 
   }
