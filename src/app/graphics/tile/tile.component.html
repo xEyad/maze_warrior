@@ -1,4 +1,4 @@
 <div [class]="GetCssClass()">
-  <ng-content *ngIf="tile.state!='blocked'" select="gfx-mark"></ng-content>
   <div *ngIf="tile.hasWalker" class="walker"></div>
+  <ng-content *ngIf="tile.state!='blocked' && !tile.hasWalker" select="gfx-mark"></ng-content>
 </div>
