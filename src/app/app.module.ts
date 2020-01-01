@@ -1,3 +1,4 @@
+import { GameMetaService } from './services/game-meta.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -9,6 +10,8 @@ import { TileComponent } from './graphics/tile/tile.component';
 import { MarkComponent } from './graphics/mark/mark.component';
 import { WorldComponent } from './graphics/world/world.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { ControlPanelComponent } from './ui/control-panel/control-panel.component';
+import { HomePageComponent } from './ui/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -16,14 +19,16 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     BacktrackLogicComponent,
     TileComponent,
     MarkComponent,
-    WorldComponent
+    WorldComponent,
+    ControlPanelComponent,
+    HomePageComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [GameService],
+  providers: [GameService,GameMetaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
