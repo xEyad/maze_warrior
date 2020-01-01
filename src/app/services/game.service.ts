@@ -13,7 +13,16 @@ export class GameService {
 
   constructor()
   {
+    this.Intialize();
+  }
+  private Intialize():void
+  {
     this.world = new World(new Maze(this.map));
+    this.reachedGoal = false;
+  }
+  Reset():void
+  {
+    this.Intialize();
   }
   Talk():string
   {
@@ -99,7 +108,7 @@ export class GameService {
 
 
   private world : World;
-  private reachedGoal = false;
+  private reachedGoal;
 
   private map3 = `+--+--+--+--+--+--+--+--+--+--+
       |              |     |  |

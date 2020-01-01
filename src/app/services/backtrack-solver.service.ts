@@ -13,9 +13,19 @@ export class BacktrackSolverService
 
   constructor(public game:GameService,public meta:GameMetaService)
   {
+    this.Initialize();
+  }
+  private Initialize() : void
+  {
     this.walker = this.game.walker;
-    let simulationSpeed = 10;
+    let simulationSpeed = this.meta.simulationSpeed;
     this.solvingSpeed = simulationSpeed;
+    this.noMoreTracks = false;
+    this.branchingPointsIndicies = [];
+  }
+  Reset():void
+  {
+    this.Initialize();
   }
   Talk():any
   {
@@ -36,7 +46,12 @@ export class BacktrackSolverService
         if(this.game.IsGameFinished() || this.noMoreTracks || this.meta.isSimulationStopped)
         {
           clearInterval(loop);
-          this.meta.isSimulationStopped = false;
+          if(this.meta.isSimulationStopped)
+          {
+            this.meta.isSimulationStopped = false;
+            this.game.Reset();
+            this.Reset();
+          }
         }
       }
     },1000/this.solvingSpeed)
@@ -119,8 +134,8 @@ export class BacktrackSolverService
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   }
-  private noMoreTracks:boolean = false;
-  private branchingPointsIndicies:number[]=[];
+  private noMoreTracks:boolean;
+  private branchingPointsIndicies:number[];
   private walker:Readonly<Walker>;
   private solvingSpeed;
 }
