@@ -1,4 +1,6 @@
 $borderWidth: 1px;
+$mainColor:#596475;
+$walkerColor:#c20114;
 div
 {
   display: flex;
@@ -9,27 +11,28 @@ div
 }
 .open
 {
-  border: solid $borderWidth;
+  border: solid $borderWidth $mainColor;
 }
 .blocked
 {
-  color: black;
-  border: solid $borderWidth black;
-  background-color: black;
+
+  color: $mainColor;
+  border: solid $borderWidth $mainColor;
+  background-color: $mainColor;
 }
 .goal
 {
-  color: green;
-  border: solid $borderWidth green;
+  color: #ffa400;
+  border: solid $borderWidth #ffa400;
 }
 .walker
 {
   height: 80%;
   width: 80%;
-  background-color: red;
+  background-color: $walkerColor;
   align-self: center;
   justify-self: center;
-  border: solid $borderWidth red;
+  border: solid $borderWidth $walkerColor;
 }
 
 
