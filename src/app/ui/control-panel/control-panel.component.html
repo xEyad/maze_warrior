@@ -1,1 +1,11 @@
-<p>control-panel works!</p>
+<div class="row d-flex">
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Width" [(ngModel)]="width">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Height" [(ngModel)]="height">
+  </div>
+  <div class="col">
+    <button type="button" class="btn btn-primary" (click)="CreateMaze()">Create</button>
+  </div>
+</div>
