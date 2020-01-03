@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
+
+///responsible for graphics configurations and game initialization data
 export class GameMetaService
 {
 
