@@ -10,7 +10,7 @@ export class Maze implements iDrawable
   readonly height:number;
   private maze:Tile[] = [];
 
-  constructor(width:number,height:number)
+  private constructor(width:number,height:number)
   {
     this.width = width;
     this.height = height;
@@ -63,6 +63,14 @@ export class Maze implements iDrawable
       else if(char==' ')
         tileIndex++;
     }
+    maze.walker = maze.start;
+    return maze;
+  }
+  static CompleteMaze(width:number,height:number,startPos:Point,goalPos:Point): Maze
+  {
+    let maze = new Maze(width,height);
+    maze.start = maze.TileAt(startPos);
+    maze.goal = maze.TileAt(goalPos);
     maze.walker = maze.start;
     return maze;
   }
