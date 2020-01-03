@@ -13,9 +13,15 @@ div
 {
   border: solid $borderWidth $mainColor;
 }
+div:hover
+{
+  $color:#9f9fed;
+  color: $color;
+  border: solid $borderWidth $color;
+  background-color: $color;
+}
 .blocked
 {
-
   color: $mainColor;
   border: solid $borderWidth $mainColor;
   background-color: $mainColor;
@@ -34,5 +40,3 @@ div
   justify-self: center;
   border: solid $borderWidth $walkerColor;
 }
-
-
