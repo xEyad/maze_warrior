@@ -1,9 +1,1 @@
-<ng-container *ngFor="let h of height;let y = index">
-  <div class="d-flex">
-    <ng-container *ngFor="let w of width;let x = index">
-      <gfx-tile [tile]="GetTileAt(x,y)">
-        <gfx-mark [isStart]="IsStart(x,y)" [isIndexed]="IsIndexed(x,y)"></gfx-mark>
-      </gfx-tile>
-    </ng-container>
-  </div>
-</ng-container>
+<gfx-maze [maze]="world.Maze()" [indexedLocations]="this.solver.GetIndexedLocations()"></gfx-maze>
