@@ -1,0 +1,7 @@
+<gfx-maze [maze]="meta.maze"
+ (mousemove)="BlockTile($event)"
+ (mousedown)="isLeftMouseBtnClicked = true"
+ (mouseup)="isLeftMouseBtnClicked = false"
+ (click)="ToggleTileState($event)"
+ ondragstart=""
+ ></gfx-maze>
