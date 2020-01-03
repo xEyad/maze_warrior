@@ -17,7 +17,7 @@ export class GameService {
   }
   private Intialize():void
   {
-    this.world = new World(new Maze(this.map));
+    this.world = new World(Maze.MazeFromString(this.map));
     this.reachedGoal = false;
   }
   Reset():void

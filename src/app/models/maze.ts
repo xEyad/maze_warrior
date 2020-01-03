@@ -10,54 +10,61 @@ export class Maze implements iDrawable
   readonly height:number;
   private maze:Tile[] = [];
 
-  constructor(map:string)
+  constructor(width:number,height:number)
   {
-    this.height=1;
-    this.width=0;
+    this.width = width;
+    this.height = height;
+    for (let y = 0; y < this.height; y++)
+      for (let x = 0; x < this.width; x++)
+        this.maze.push(new Tile(State.open,new Point(x,y)));
+  }
+  static MazeFromString(map:string) : Maze
+  {
+    let height=1;
+    let width=0;
     for (let i = 0; i < map.length; i++)
     {
         if(map[i]=='\n')
         {
-          this.width = i;
+          width = i;
           break;
         }
     }
     for (let i = 0; i < map.length; i++)
     {
       if(map[i]=='\n')
-        this.height++;
+        height++;
     }
-    for (let y = 0; y < this.height; y++)
-      for (let x = 0; x < this.width; x++)
-      this.maze.push(new Tile(State.open,new Point(x,y)));
+    let maze = new Maze(width,height);
 
     let tileIndex = 0;
     for (let i = 0; i < map.length; i++)
     {
       const char = map[i];
-      let x = tileIndex % (this.width);
-      let y = Math.floor(tileIndex / (this.width));
+      let x = tileIndex % (maze.width);
+      let y = Math.floor(tileIndex / (maze.width));
       let loc = new Point(x,y);
       if(char == 'S'||char == 's')
       {
-        this.start = this.TileAt(loc);
+        maze.start = maze.TileAt(loc);
         tileIndex++;
       }
       else if(char == '+' || char == '-' || char == '|')
       {
-        this.SetTileState(loc,State.blocked);
+        maze.SetTileState(loc,State.blocked);
         tileIndex++;
       }
       else if(char == 'G'||char == 'g')
       {
-        this.goal = this.TileAt(loc);
-        this.goal.isGoal = true;
+        maze.goal = maze.TileAt(loc);
+        maze.goal.isGoal = true;
         tileIndex++;
       }
       else if(char==' ')
         tileIndex++;
     }
-    this.walker = this.start;
+    maze.walker = maze.start;
+    return maze;
   }
   get goalTile() : Readonly<Tile>
   {
@@ -102,6 +109,7 @@ export class Maze implements iDrawable
     }
     return `${mazeTxt}\nwalker at: ${this.walker.coordinate}\ngoal at: ${this.goal.coordinate}\nstart at: ${this.start.coordinate}`;
   }
+
   PutWalkerAt(point:Point) : void
   {
     this.walker.hasWalker = false;
