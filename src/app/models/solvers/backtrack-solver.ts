@@ -1,31 +1,18 @@
-import { GameMetaService } from './game-meta.service';
-import { State } from './../models/tile';
-import { Walker, Dir } from './../models/walker';
-import { GameService } from './game.service';
-import { Injectable } from '@angular/core';
-import { Point } from '../models/utility/point';
+import { GameService } from './../../services/game.service';
+import { State } from '../tile';
+import { Walker } from '../walker';
+import { Point } from '../utility/point';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class BacktrackSolverService
+export class BacktrackSolver
 {
-
-  constructor(public game:GameService,public meta:GameMetaService)
+  constructor(game:GameService,simulationSpeed:number)
   {
-    this.Initialize();
-  }
-  private Initialize() : void
-  {
+    this.game = game;
     this.walker = this.game.walker;
-    let simulationSpeed = this.meta.simulationSpeed;
     this.solvingSpeed = simulationSpeed;
     this.noMoreTracks = false;
     this.branchingPointsIndicies = [];
-  }
-  Reset():void
-  {
-    this.Initialize();
+    this.intervalRefrence = null;
   }
   Talk():any
   {
@@ -38,21 +25,17 @@ export class BacktrackSolverService
   }
   SolveInSteps():void
   {
-    var loop = setInterval(()=>{
-      if(this.meta.isSimulationRunning)
+    if(this.intervalRefrence != null)
+      return;
+    this.intervalRefrence = setInterval(()=>{
+      if(!this.isPaused)
       {
         this.game.DoGameStep();
         this.SolveAStep();
-        if(this.game.IsGameFinished() || this.noMoreTracks || this.meta.isSimulationStopped)
-        {
-          clearInterval(loop);
-          if(this.meta.isSimulationStopped)
-          {
-            this.meta.StopSimulation();
-            this.game.Reset();
-            this.Reset();
-          }
-        }
+      }
+      if(this.game.IsGameFinished() || this.noMoreTracks)
+      {
+        clearInterval(this.intervalRefrence);
       }
     },1000/this.solvingSpeed)
 
@@ -73,6 +56,10 @@ export class BacktrackSolverService
     else if(!this.game.IsGameFinished())
       this.BacktrackToBranchingPoint();
   }
+  StopSolving():void
+  {
+    clearInterval(this.intervalRefrence);
+  }
   GetIndexedLocations() : Readonly<Point>[]
   {
     let indexedLocations:Point[] = [];
@@ -80,6 +67,14 @@ export class BacktrackSolverService
       indexedLocations.push(this.walker.MoveStack()[index]);
 
     return indexedLocations;
+  }
+  PauseSolving():void
+  {
+    this.isPaused = true;
+  }
+  ResumeSolving():void
+  {
+    this.isPaused = false;
   }
   private BacktrackToBranchingPoint():void
   {
@@ -137,5 +132,8 @@ export class BacktrackSolverService
   private noMoreTracks:boolean;
   private branchingPointsIndicies:number[];
   private walker:Readonly<Walker>;
-  private solvingSpeed;
+  private solvingSpeed:number;
+  private intervalRefrence:NodeJS.Timer;
+  private isPaused:boolean;
+  private game:GameService;
 }
