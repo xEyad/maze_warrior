@@ -1,3 +1,4 @@
+import { GameService } from './../../services/game.service';
 import { Maze } from './../../models/maze';
 import { GameMetaService } from './../../services/game-meta.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -10,14 +11,14 @@ import { Component, OnInit, Input } from '@angular/core';
 export class WorldGeneratorComponent implements OnInit {
 
   isLeftMouseBtnClicked = false;
-  constructor(public meta:GameMetaService)
+  constructor(public meta:GameMetaService,public game:GameService)
   {
   }
 
   ngOnInit() {
   }
 
-  DraggingMode(event:Event):void
+  DraggingMode():void
   {
     this.isLeftMouseBtnClicked = false;
   }
@@ -29,5 +30,9 @@ export class WorldGeneratorComponent implements OnInit {
   {
     if(this.isLeftMouseBtnClicked)
       event.target.dispatchEvent(new Event('blockTile', { bubbles: true }));
+  }
+  ngOnDestroy()
+  {
+    this.game.SetMaze(this.meta.maze);
   }
 }
