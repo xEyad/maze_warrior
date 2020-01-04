@@ -1,7 +1,6 @@
 import { World } from '../../models/world';
-import { Tile } from '../../models/tile';
 import { Component, OnInit, Input } from '@angular/core';
-import { BacktrackSolverService } from 'src/app/services/backtrack-solver.service';
+import { BacktrackSolver } from 'src/app/models/solvers/backtrack-solver';
 
 @Component({
   selector: 'gfx-world',
@@ -11,7 +10,7 @@ import { BacktrackSolverService } from 'src/app/services/backtrack-solver.servic
 export class WorldComponent implements OnInit {
 
   @Input() world : Readonly<World>;
-  @Input() solver:Readonly<BacktrackSolverService>;
+  @Input() solver:Readonly<BacktrackSolver>;
 
   constructor(){}
 
