@@ -1,3 +1,4 @@
+import { Maze } from './../../models/maze';
 import { GameMetaService } from './../../services/game-meta.service';
 import { Component, OnInit, Input } from '@angular/core';
 
@@ -16,10 +17,12 @@ export class WorldGeneratorComponent implements OnInit {
   ngOnInit() {
   }
 
+  DraggingMode(event:Event):void
+  {
+    this.isLeftMouseBtnClicked = false;
+  }
   ToggleTileState(event:Event):void
   {
-    console.log('toggling');
-
     event.target.dispatchEvent(new Event('toggleTile', { bubbles: true }));
   }
   BlockTile(event:Event):void

@@ -3,5 +3,5 @@
  (mousedown)="isLeftMouseBtnClicked = true"
  (mouseup)="isLeftMouseBtnClicked = false"
  (click)="ToggleTileState($event)"
- ondragstart=""
+ (dragstart)="DraggingMode($event)"
  ></gfx-maze>
