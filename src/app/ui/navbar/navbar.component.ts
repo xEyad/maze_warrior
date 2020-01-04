@@ -1,5 +1,5 @@
 import { GameMetaService } from './../../services/game-meta.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'ui-navbar',
@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+  @Output() resetSimulation = new EventEmitter<void>();
+  @Output() pauseSimulation = new EventEmitter<void>();
+  @Output() resumeSimulation = new EventEmitter<void>();
   constructor(public meta:GameMetaService)
   {
 
@@ -15,15 +18,19 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
   }
-  resetSimulation()
+  ResetSimulation()
   {
+    this.resetSimulation.emit();
+    this.meta.Reset();
   }
-  pauseSimulation()
+  PauseSimulation()
   {
+    this.pauseSimulation.emit();
     this.meta.PauseSimulation();
   }
-  startSimulation()
+  StartSimulation()
   {
     this.meta.StartSimulation();
+    this.resumeSimulation.emit();
   }
 }
