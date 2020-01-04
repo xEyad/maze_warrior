@@ -17,6 +17,18 @@ export class TileComponent implements OnInit {
   {
   }
 
+
+  Drag(event):void
+  {
+    let type;
+    if(this.tile.isGoal)
+      type = "goal";
+    else if(this.tile.coordinate.Equals(this.meta.startPos))
+      type = "start";
+      event.dataTransfer.setData("tileType", type);
+  }
+
+
   GetCssClass() : string
   {
     if(this.tile.isGoal)
@@ -24,10 +36,31 @@ export class TileComponent implements OnInit {
     else
       return this.tile.state;
   }
-
-  Open():void
+  AcceptDrop(event):void
   {
-    this.tile.state = State.open;
+
+    event.preventDefault();
+    let type = event.dataTransfer.getData("tileType");
+
+    switch (type) {
+      case 'goal':
+        this.meta.goalPos = this.tile.coordinate;
+        break;
+      case 'start':
+        this.meta.startPos = this.tile.coordinate;
+        break;
+      default:
+        break;
+    }
+  }
+  SetAllowDrop(event:Event):void
+  {
+    if(this.tile.state != State.blocked && !(this.tile.isGoal || this.tile.coordinate.Equals(this.meta.startPos)))
+      event.preventDefault();
+  }
+  IsDraggable():boolean
+  {
+    return this.tile.isGoal || this.tile.coordinate.Equals(this.meta.startPos);
   }
   ToggleState():void
   {
@@ -36,8 +69,13 @@ export class TileComponent implements OnInit {
     else
       this.Open();
   }
-  Block():void
+  private Open():void
   {
-    this.tile.state = State.blocked;
+    this.tile.state = State.open;
+  }
+  private Block():void
+  {
+    if(!this.tile.isGoal && !this.meta.startPos.Equals(this.tile.coordinate))
+      this.tile.state = State.blocked;
   }
 }

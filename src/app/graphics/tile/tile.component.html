@@ -1,4 +1,10 @@
-<div [class]="GetCssClass()" (blockTile)="Block()" (toggleTile)="ToggleState()" >
+<div [class]="GetCssClass()"
+  (blockTile)="Block()"
+  (toggleTile)="ToggleState()"
+  [draggable]="IsDraggable()"
+  (dragstart)="Drag($event)"
+  (dragover)="SetAllowDrop($event)"
+  (drop)="AcceptDrop($event)">
   <div *ngIf="tile.hasWalker" class="walker"></div>
   <ng-content *ngIf="tile.state!='blocked' && !tile.hasWalker" select="gfx-mark"></ng-content>
 </div>
