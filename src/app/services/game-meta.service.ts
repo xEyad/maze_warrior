@@ -40,6 +40,13 @@ export class GameMetaService
   {
     this._isSimulationStopped= true;
   }
+  Reset():void
+  {
+    this._isSimulationRunning = false;
+    this._isSimulationStopped = false;
+    this._isSimulationStarted = false;
+    this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
+  }
   SetMazeDimensions(width:number,height:number) :void
   {
     this._mazeWidth = width;
