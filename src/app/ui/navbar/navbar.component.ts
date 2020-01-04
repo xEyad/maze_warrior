@@ -17,14 +17,13 @@ export class NavbarComponent implements OnInit {
   }
   resetSimulation()
   {
-    this.meta.isSimulationStopped = true;
   }
   pauseSimulation()
   {
-    this.meta.isSimulationRunning = false;
+    this.meta.PauseSimulation();
   }
   startSimulation()
   {
-    this.meta.isSimulationRunning = true;
+    this.meta.StartSimulation();
   }
 }
