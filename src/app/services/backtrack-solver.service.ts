@@ -48,7 +48,7 @@ export class BacktrackSolverService
           clearInterval(loop);
           if(this.meta.isSimulationStopped)
           {
-            this.meta.isSimulationStopped = false;
+            this.meta.StopSimulation();
             this.game.Reset();
             this.Reset();
           }
