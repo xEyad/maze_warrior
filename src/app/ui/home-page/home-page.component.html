@@ -1,11 +1,11 @@
-<ui-navbar></ui-navbar>
+<ui-navbar (resetSimulation)="Reset()" (pauseSimulation)="Pause()" (resumeSimulation)="Resume()"></ui-navbar>
 <div class="container-fluid">
   <div class="row">
     <!-- <div class="col-sm">
     </div> -->
     <div class="col-sm">
       <ui-world-generator *ngIf="!meta.isSimulationStarted" ></ui-world-generator>
-      <app-backtrack-logic *ngIf="meta.isSimulationStarted"></app-backtrack-logic>
+      <app-backtrack-logic *ngIf="meta.isSimulationStarted" [pauseSolving]="IsSimulationPaused()"></app-backtrack-logic>
     </div>
     <!-- <div class="col-sm">
     </div> -->

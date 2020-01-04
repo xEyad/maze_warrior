@@ -1,3 +1,4 @@
+import { GameService } from './../../services/game.service';
 import { GameMetaService } from './../../services/game-meta.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(public meta:GameMetaService) { }
+  isSimulationPaused:boolean = false;
+  constructor(public meta:GameMetaService,public game:GameService) { }
 
   ngOnInit() {
   }
-
+  Reset():void
+  {
+    this.game.Reset(this.meta.maze);
+  }
+  IsSimulationPaused():boolean
+  {
+    return this.isSimulationPaused;
+  }
+  Pause():void
+  {
+    this.isSimulationPaused = true;
+  }
+  Resume():void
+  {
+    this.isSimulationPaused = false;
+  }
 }
