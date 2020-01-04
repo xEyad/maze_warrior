@@ -20,7 +20,25 @@ export class GameMetaService
     this._goalPos = new Point(1,1);
     this._isSimulationRunning = false;
     this._isSimulationStopped = false;
+    this._isSimulationStarted = false;
     this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
+  }
+  StartSimulation():void
+  {
+    this._isSimulationRunning = true;
+    this._isSimulationStarted = true;
+  }
+  ResumeSimulation():void
+  {
+    this._isSimulationRunning = true;
+  }
+  PauseSimulation():void
+  {
+    this._isSimulationRunning = false;
+  }
+  StopSimulation():void
+  {
+    this._isSimulationStopped= true;
   }
   SetMazeDimensions(width:number,height:number) :void
   {
@@ -45,6 +63,7 @@ export class GameMetaService
   private _goalPos:Point ;
   private _isSimulationRunning:boolean;
   private _isSimulationStopped:boolean;
+  private _isSimulationStarted:boolean;
   private _maze:Maze;
 
 
@@ -56,6 +75,7 @@ export class GameMetaService
   get goalPos():Readonly<Point>  {return this._goalPos;}
   get isSimulationRunning():Readonly<boolean> {return this._isSimulationRunning;}
   get isSimulationStopped():Readonly<boolean> {return this._isSimulationStopped;}
+  get isSimulationStarted():Readonly<boolean> {return this._isSimulationStarted;}
   get maze():Maze{return this._maze;}
 
 
@@ -85,7 +105,4 @@ export class GameMetaService
     this._goalPos=val;
     this._maze.ChangeGoalPos(val);
   }
-  set isSimulationRunning(val:boolean){this._isSimulationRunning=val;}
-  set isSimulationStopped(val:boolean){this._isSimulationStopped=val;}
-
 }
