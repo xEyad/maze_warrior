@@ -4,7 +4,7 @@ import {Point} from './utility/point';
 export class Maze implements iDrawable
 {
   private _goal:Tile;
-  private start:Tile;
+  private _start:Tile;
   private walker:Tile;
   readonly width:number;
   readonly height:number;
@@ -62,7 +62,6 @@ export class Maze implements iDrawable
       else if(char==' ')
         tileIndex++;
     }
-    maze.walker = maze.start;
     return maze;
   }
   static CompleteMaze(width:number,height:number,startPos:Point,goalPos:Point): Maze
@@ -70,7 +69,6 @@ export class Maze implements iDrawable
     let maze = new Maze(width,height);
     maze.start = maze.TileAt(startPos);
     maze.goal = maze.TileAt(goalPos);
-    maze.walker = maze.start;
     return maze;
   }
   private set goal(tile:Tile)
@@ -78,9 +76,23 @@ export class Maze implements iDrawable
     this._goal = tile;
     this._goal.isGoal = true;
   }
+  private set start(tile:Tile)
+  {
+    this._start = tile;
+    this.walker = this._start;
+  }
+
+  private get goal():Tile
+  {
+    return this._goal;
+  }
+  private get start():Tile
+  {
+    return this._start;
+  }
   get goalTile() : Readonly<Tile>
   {
-    return this.goal;
+    return this._goal;
   }
   get startTile() : Readonly<Tile>
   {
@@ -97,6 +109,7 @@ export class Maze implements iDrawable
   {
     return this.maze;
   }
+
   Talk():string
   {
     let mazeTxt = '';
@@ -121,7 +134,18 @@ export class Maze implements iDrawable
     }
     return `${mazeTxt}\nwalker at: ${this.walker.coordinate}\ngoal at: ${this.goal.coordinate}\nstart at: ${this.start.coordinate}`;
   }
-
+  ChangeStartPos(pos:Point):void
+  {
+    if(!pos.Equals(this.goal.coordinate))
+      this.start = this.TileAt(pos);
+  }
+  ChangeGoalPos(pos:Point):void
+  {
+    if(pos.Equals(this.start.coordinate))
+      return;
+    this.goal.isGoal = false;
+    this.goal = this.TileAt(pos);
+  }
   PutWalkerAt(point:Point) : void
   {
     this.walker.hasWalker = false;
