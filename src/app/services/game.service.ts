@@ -17,8 +17,13 @@ export class GameService {
   }
   private Intialize():void
   {
+    //to be deleted
     this.world = new World(Maze.MazeFromString(this.map));
     this.reachedGoal = false;
+  }
+  SetMaze(maze:Maze):void
+  {
+    this.world = new World(maze);
   }
   Reset():void
   {
