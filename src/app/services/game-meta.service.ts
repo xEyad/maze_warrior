@@ -17,10 +17,10 @@ export class GameMetaService
     this._mazeWidth = 25;
     this._mazeHeight = 25;
     this._startPos = new Point(0,0);
-    this._goalpos = new Point(1,1);
+    this._goalPos = new Point(1,1);
     this._isSimulationRunning = false;
     this._isSimulationStopped = false;
-    this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalpos);
+    this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
   }
   SetMazeDimensions(width:number,height:number) :void
   {
@@ -30,15 +30,19 @@ export class GameMetaService
   }
   private UpdateMaze():void
   {
-    if(this.maze.width!=this.mazeWidth || this.maze.height != this.mazeHeight)
-      this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalpos);
+    if(
+      this.maze.width!=this.mazeWidth ||
+      this.maze.height != this.mazeHeight
+      )
+      this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
   }
+
   private _tileSize:number;
   private _simulationSpeed:number;
   private _mazeWidth:number;
   private _mazeHeight:number;
   private _startPos:Point ;
-  private _goalpos:Point ;
+  private _goalPos:Point ;
   private _isSimulationRunning:boolean;
   private _isSimulationStopped:boolean;
   private _maze:Maze;
@@ -49,10 +53,12 @@ export class GameMetaService
   get mazeWidth():Readonly<number> {return this._mazeWidth;}
   get mazeHeight():Readonly<number> {return this._mazeHeight;}
   get startPos():Readonly<Point>  {return this._startPos;}
-  get goalpos():Readonly<Point>  {return this._goalpos;}
+  get goalPos():Readonly<Point>  {return this._goalPos;}
   get isSimulationRunning():Readonly<boolean> {return this._isSimulationRunning;}
   get isSimulationStopped():Readonly<boolean> {return this._isSimulationStopped;}
   get maze():Maze{return this._maze;}
+
+
   set tileSize(val:number){this._tileSize=val;}
   set simulationSpeed(val:number){this._simulationSpeed=val;}
   set mazeWidth(val:number)
@@ -65,8 +71,20 @@ export class GameMetaService
     this._mazeHeight=val;
     this.UpdateMaze();
   }
-  set startPos(val:Readonly<Point>){this._startPos=val;}
-  set goalpos(val:Readonly<Point>){this._goalpos=val;}
+  set startPos(val:Readonly<Point>)
+  {
+    if(this.startPos.Equals(this.goalPos))
+      return;
+    this._startPos=val;
+    this._maze.ChangeStartPos(val)
+  }
+  set goalPos(val:Readonly<Point>)
+  {
+    if(this.startPos.Equals(this.goalPos))
+      return;
+    this._goalPos=val;
+    this._maze.ChangeGoalPos(val);
+  }
   set isSimulationRunning(val:boolean){this._isSimulationRunning=val;}
   set isSimulationStopped(val:boolean){this._isSimulationStopped=val;}
 
