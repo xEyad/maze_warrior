@@ -1,12 +1,13 @@
 <ui-navbar></ui-navbar>
 <div class="container-fluid">
   <div class="row">
+    <!-- <div class="col-sm">
+    </div> -->
     <div class="col-sm">
+      <ui-world-generator *ngIf="!meta.isSimulationStarted" ></ui-world-generator>
+      <app-backtrack-logic *ngIf="meta.isSimulationStarted"></app-backtrack-logic>
     </div>
-    <div class="col-sm">
-      <app-backtrack-logic></app-backtrack-logic>
-    </div>
-    <div class="col-sm">
-    </div>
+    <!-- <div class="col-sm">
+    </div> -->
   </div>
 </div>
