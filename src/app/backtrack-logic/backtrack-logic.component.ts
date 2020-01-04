@@ -1,6 +1,9 @@
+import { GameMetaService } from './../services/game-meta.service';
 import { GameService } from './../services/game.service';
-import { Component, OnInit, HostListener } from '@angular/core';
-import { BacktrackSolverService } from '../services/backtrack-solver.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { BacktrackSolver } from '../models/solvers/backtrack-solver';
+
+
 
 @Component({
   selector: 'app-backtrack-logic',
@@ -9,13 +12,24 @@ import { BacktrackSolverService } from '../services/backtrack-solver.service';
 })
 export class BacktrackLogicComponent implements OnInit {
 
-  constructor(public game:GameService,public solver:BacktrackSolverService)
+  @Input() pauseSolving:boolean;
+  solver:BacktrackSolver;
+  constructor(public game:GameService,public meta:GameMetaService)
   {
-    solver.SolveInSteps();
+    this.solver = new BacktrackSolver(game,meta.simulationSpeed);
+    this.solver.SolveInSteps();
   }
   ngOnInit()
   {
 
+  }
+  ngDoCheck()
+  {
+    this.pauseSolving? this.solver.PauseSolving() : this.solver.ResumeSolving();
+  }
+  ngOnDestroy()
+  {
+    this.solver.StopSolving();
   }
 }
 
