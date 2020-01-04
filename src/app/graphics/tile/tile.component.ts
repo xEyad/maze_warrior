@@ -25,7 +25,13 @@ export class TileComponent implements OnInit {
       type = "goal";
     else if(this.tile.coordinate.Equals(this.meta.startPos))
       type = "start";
-      event.dataTransfer.setData("tileType", type);
+    else
+    {
+      event.preventDefault();
+      return;
+    }
+
+    event.dataTransfer.setData("tileType", type);
   }
 
 
