@@ -3,7 +3,7 @@ import {Point} from './utility/point';
 
 export class Maze implements iDrawable
 {
-  private goal:Tile;
+  private _goal:Tile;
   private start:Tile;
   private walker:Tile;
   readonly width:number;
@@ -57,7 +57,6 @@ export class Maze implements iDrawable
       else if(char == 'G'||char == 'g')
       {
         maze.goal = maze.TileAt(loc);
-        maze.goal.isGoal = true;
         tileIndex++;
       }
       else if(char==' ')
@@ -73,6 +72,11 @@ export class Maze implements iDrawable
     maze.goal = maze.TileAt(goalPos);
     maze.walker = maze.start;
     return maze;
+  }
+  private set goal(tile:Tile)
+  {
+    this._goal = tile;
+    this._goal.isGoal = true;
   }
   get goalTile() : Readonly<Tile>
   {
