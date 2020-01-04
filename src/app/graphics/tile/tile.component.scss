@@ -16,6 +16,7 @@ div
 div:hover
 {
   $color:#9f9fed;
+  opacity: 0.5;
   color: $color;
   border: solid $borderWidth $color;
   background-color: $color;
