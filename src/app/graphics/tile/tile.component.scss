@@ -31,6 +31,9 @@ div:hover
 {
   color: #ffa400;
   border: solid $borderWidth #ffa400;
+  background-image: url('../../../assets/crosshair.png');
+  background-size: cover;
+  background-position: center;
 }
 .walker
 {
