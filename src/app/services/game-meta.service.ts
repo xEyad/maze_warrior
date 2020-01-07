@@ -1,3 +1,4 @@
+import { State } from './../models/tile';
 import { Maze } from './../models/maze';
 import { Point } from './../models/utility/point';
 import { Injectable } from '@angular/core';
@@ -46,6 +47,23 @@ export class GameMetaService
     this._isSimulationStopped = false;
     this._isSimulationStarted = false;
     this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
+  }
+  ResetMaze():void
+  {
+    this._maze.ClearBlocks();
+  }
+  RandomFillMaze():void
+  {
+    for (const tile of this._maze.tiles)
+    {
+      if(tile.coordinate.Equals(this.startPos) ||tile.coordinate.Equals(this.goalPos))
+        continue;
+      const rnd = Math.random();
+      if(rnd > 0.5)
+        this.maze.SetTileState(tile.coordinate,State.blocked);
+      else
+        this.maze.SetTileState(tile.coordinate,State.open);
+    }
   }
   SetMazeDimensions(width:number,height:number) :void
   {
