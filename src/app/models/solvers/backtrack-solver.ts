@@ -14,6 +14,10 @@ export class BacktrackSolver
     this.branchingPointsIndicies = [];
     this.intervalRefrence = null;
   }
+  IsNoSolutionFound():Readonly<boolean>
+  {
+    return this.noMoreTracks
+  }
   Talk():any
   {
     return this.GetAvailableTilesAround(this.walker.CurPos());
