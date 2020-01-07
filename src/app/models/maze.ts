@@ -10,14 +10,7 @@ export class Maze implements iDrawable
   readonly height:number;
   private maze:Tile[] = [];
 
-  private constructor(width:number,height:number)
-  {
-    this.width = width;
-    this.height = height;
-    for (let y = 0; y < this.height; y++)
-      for (let x = 0; x < this.width; x++)
-        this.maze.push(new Tile(State.open,new Point(x,y)));
-  }
+
   static MazeFromString(map:string) : Maze
   {
     let height=1;
@@ -71,25 +64,7 @@ export class Maze implements iDrawable
     maze.goal = maze.TileAt(goalPos);
     return maze;
   }
-  private set goal(tile:Tile)
-  {
-    this._goal = tile;
-    this._goal.isGoal = true;
-  }
-  private set start(tile:Tile)
-  {
-    this._start = tile;
-    this.walker = this._start;
-  }
 
-  private get goal():Tile
-  {
-    return this._goal;
-  }
-  private get start():Tile
-  {
-    return this._start;
-  }
   get goalTile() : Readonly<Tile>
   {
     return this._goal;
@@ -109,7 +84,13 @@ export class Maze implements iDrawable
   {
     return this.maze;
   }
-
+  ClearBlocks():void
+  {
+    for (const tile of this.maze)
+    {
+      tile.state = State.open;
+    }
+  }
   Talk():string
   {
     let mazeTxt = '';
@@ -196,6 +177,33 @@ export class Maze implements iDrawable
   to1D(x:number,y:number) : number
   {
     return y*this.width+x;
+  }
+  private constructor(width:number,height:number)
+  {
+    this.width = width;
+    this.height = height;
+    for (let y = 0; y < this.height; y++)
+      for (let x = 0; x < this.width; x++)
+        this.maze.push(new Tile(State.open,new Point(x,y)));
+  }
+  private set goal(tile:Tile)
+  {
+    this._goal = tile;
+    this._goal.isGoal = true;
+  }
+  private set start(tile:Tile)
+  {
+    this._start = tile;
+    this.walker = this._start;
+  }
+
+  private get goal():Tile
+  {
+    return this._goal;
+  }
+  private get start():Tile
+  {
+    return this._start;
   }
   private TileAt(point:Point) : Tile
   {
