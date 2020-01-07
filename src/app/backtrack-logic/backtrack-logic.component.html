@@ -1,1 +1,2 @@
 <gfx-world [world]="game.World()" [solver]="solver"></gfx-world>
+<h1 *ngIf="solver.IsNoSolutionFound()">This Maze Has No Available Path to the Goal</h1>
