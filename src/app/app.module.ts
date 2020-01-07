@@ -16,6 +16,7 @@ import { HomePageComponent } from './ui/home-page/home-page.component';
 import { NavbarComponent } from './ui/navbar/navbar.component';
 import { WorldGeneratorComponent } from './ui/world-generator/world-generator.component';
 import { MazeComponent } from './graphics/maze/maze.component';
+import { MazeConstructionComponent } from './ui/maze-construction/maze-construction.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MazeComponent } from './graphics/maze/maze.component';
     HomePageComponent,
     NavbarComponent,
     WorldGeneratorComponent,
-    MazeComponent
+    MazeComponent,
+    MazeConstructionComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
