@@ -1,3 +1,4 @@
+import { Emath } from './../utility/eMath';
 import { GameService } from './../../services/game.service';
 import { State } from '../tile';
 import { Walker } from '../walker';
