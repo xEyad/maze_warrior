@@ -1,3 +1,4 @@
+import { RecursiveFiller } from './../models/maze filler/recursive-filler';
 import { State } from './../models/tile';
 import { Maze } from './../models/maze';
 import { Point } from './../models/utility/point';
@@ -23,6 +24,9 @@ export class GameMetaService
     this._isSimulationStopped = false;
     this._isSimulationStarted = false;
     this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
+
+    var r = new RecursiveFiller(this.maze);
+    r.Construct();
   }
   StartSimulation():void
   {
