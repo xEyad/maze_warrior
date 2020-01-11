@@ -1,5 +1,6 @@
+import { Emath } from './../utility/eMath';
 import { Point } from './../utility/point';
-import { Tile, State } from './../tile';
+import { State } from './../tile';
 import { Maze } from './../maze';
 
 export class RecursiveFiller
@@ -7,33 +8,62 @@ export class RecursiveFiller
   constructor(maze:Maze)
   {
     this.maze = maze;
-    this.isFirstTime = true;
+    this.chambers = [];
+    const topLeft = this.maze.tiles[0].coordinate;
+    const botRight = this.maze.tiles[this.maze.tiles.length-1].coordinate;
+    const pair = new ChamberPair(topLeft,botRight);
+    this.chambers.push(pair);
+
   }
   Construct():void
   {
-    const start = this.ChamberStartPoint();
-    const end = this.ChamberEndPoint();
-    this.GenerateDivisionPoints(start,end);
-    this.CreateWalls();
-    //record in a stack the newly generated 4 PAIRS that represents the start and end points of the 4 new chambers
+    while(this.chambers.length > 0)
+    {
+      const pair = this.chambers.pop();
+      this.GenerateDivisionPoints(pair.topLeft,pair.botRight);
+      this.CreateWalls();
+      this.AddChambers();
+    }
     //repeate with new 4 chambers and don't forget to stop at certain size 2x2
   }
-  private ChamberStartPoint() :Readonly<Point>
+  private AddChambers():void
   {
-    if(this.isFirstTime)
-      return this.maze.tiles[0].coordinate;
+    this.AddTopLeftWall();
+    this.AddTopRighttWall();
+    this.AddBotLeftWall();
+    this.AddBotRightWall();
   }
-  private ChamberEndPoint() :Readonly<Point>
+  private AddTopLeftWall():void
   {
-    if(this.isFirstTime)
-    {
-      this.isFirstTime = false;
-      return this.maze.tiles[this.maze.tiles.length-1].coordinate;
-    }
+    const topLeft = new Point(this.divisionPoint3.x,this.divisionPoint1.y);
+    const botRight = this.IntersectionPoint();
+    const pair = new ChamberPair(topLeft,botRight);
+    this.chambers.push(pair);
+  }
+  private AddTopRighttWall():void
+  {
+    const topLeft = this.divisionPoint1;
+    const botRight = this.divisionPoint4;
+    const pair = new ChamberPair(topLeft,botRight);
+    this.chambers.push(pair);
+  }
+  private AddBotLeftWall():void
+  {
+    const topLeft = this.divisionPoint3;
+    const botRight = this.divisionPoint2;
+    const pair = new ChamberPair(topLeft,botRight);
+    this.chambers.push(pair);
+  }
+  private AddBotRightWall():void
+  {
+    const topLeft = this.IntersectionPoint();
+    const botRight = new Point(this.divisionPoint4.x,this.divisionPoint2.y);
+    const pair = new ChamberPair(topLeft,botRight);
+    this.chambers.push(pair);
   }
   private IntersectionPoint():Point
   {
-    return new Point(this.division1.x,this.division3.y);
+    return new Point(this.divisionPoint1.x,this.divisionPoint3.y);
   }
   private CreateWalls():void
   {
@@ -43,10 +73,9 @@ export class RecursiveFiller
   private CreateVeritcalWall():void
   {
     let foundNonEmptyTile = false;
-    const height = Math.abs(this.division1.y-this.division2.y);
-    for (let y = this.division1.y; y < height; y++)
+    for (let y = this.divisionPoint1.y; y <= this.divisionPoint2.y; y++)
     {
-      const coordinate = new Point(this.division1.x,y);
+      const coordinate = new Point(this.divisionPoint1.x,y);
       if(this.IsTileEmpty(coordinate))
         this.maze.SetTileState(coordinate,State.blocked);
       else
@@ -54,18 +83,17 @@ export class RecursiveFiller
     }
     if(!foundNonEmptyTile)
     {
-      const y = Emath.GetRandomInt(this.division1.y,this.division1.y+height+1);
-      const coordinate = new Point(this.division1.x,y);
-      this.maze.SetTileState(coordinate,State.blocked);
+      const y = Emath.GetRandomInt(this.divisionPoint1.y,this.divisionPoint2.y+1);
+      const coordinate = new Point(this.divisionPoint1.x,y);
+      this.maze.SetTileState(coordinate,State.open);
     }
   }
   private CreateHorizontalWall():void
   {
     let foundNonEmptyTile = false;
-    const width = Math.abs(this.division1.x-this.division2.x);
-    for (let x = this.division3.x; x < width; x++)
+    for (let x = this.divisionPoint3.x; x <= this.divisionPoint4.x; x++)
     {
-      const coordinate = new Point(x,this.division3.y);
+      const coordinate = new Point(x,this.divisionPoint3.y);
       if(this.IsTileEmpty(coordinate))
         this.maze.SetTileState(coordinate,State.blocked);
       else
@@ -73,35 +101,35 @@ export class RecursiveFiller
     }
     if(!foundNonEmptyTile)
     {
-      const x = Emath.GetRandomInt(this.division3.x,this.division3.x+width+1);
-      const coordinate = new Point(x,this.division3.y);
-      this.maze.SetTileState(coordinate,State.blocked);
+      const x = Emath.GetRandomInt(this.divisionPoint3.x,this.divisionPoint4.x+1);
+      const coordinate = new Point(x,this.divisionPoint3.y);
+      this.maze.SetTileState(coordinate,State.open);
     }
   }
   private GenerateDivisionPoints(start:Point,end:Point):void
   {
-    let offsetStart = new Point(start.x+2,start.y-2);
+    let offsetStart = new Point(start.x+2,start.y+2);
     let offsetEnd = new Point(end.x-2,end.y-2);
     do
     {
-      this.division1 = this.RandomPointOnXBetween(offsetStart,offsetEnd);
-      this.division2 = new Point(this.division1.x,end.y);
+      this.divisionPoint1 = this.RandomPointOnXBetween(offsetStart,offsetEnd);
+      this.divisionPoint2 = new Point(this.divisionPoint1.x,offsetEnd.y);
     }
-    while(!this.ArePointsOnBlockedTiles(this.division1,this.division2))
+    while(this.ArePointsOnBlockedTiles(this.divisionPoint1,this.divisionPoint2))
 
     do
     {
-      this.division3 = this.RandomPointOnYBetween(offsetStart,offsetEnd);
-      this.division4 = new Point(start.x,this.division3.y);
+      this.divisionPoint3 = this.RandomPointOnYBetween(offsetStart,offsetEnd);
+      this.divisionPoint4 = new Point(offsetEnd.x,this.divisionPoint3.y);
     }
-    while(!this.ArePointsOnBlockedTiles(this.division3,this.division4))
+    while(this.ArePointsOnBlockedTiles(this.divisionPoint3,this.divisionPoint4))
   }
   private ArePointsOnBlockedTiles(p1:Point,p2:Point):boolean
   {
     return (
-      this.maze.GetTileState(p1) == State.blocked &&
+      this.maze.GetTileState(p1) == State.blocked ||
       this.maze.GetTileState(p2) == State.blocked
-      )
+      );
   }
   private RandomPointOnXBetween(start:Point,end:Point):Point
   {
@@ -118,9 +146,20 @@ export class RecursiveFiller
     return (!this.maze.startTile.coordinate.Equals(coordinate) && !this.maze.goalTile.coordinate.Equals(coordinate));
   }
   private maze:Maze;
-  private division1:Point;
-  private division2:Point;
-  private division3:Point;
-  private division4:Point;
-  private isFirstTime:boolean;
+  private divisionPoint1:Point;
+  private divisionPoint2:Point;
+  private divisionPoint3:Point;
+  private divisionPoint4:Point;
+  private chambers:Array<ChamberPair>;
+}
+
+class ChamberPair
+{
+  topLeft:Point;
+  botRight:Point;
+  constructor(topLeft,botRight)
+  {
+    this.topLeft = topLeft;
+    this.botRight = botRight;
+  }
 }
