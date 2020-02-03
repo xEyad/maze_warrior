@@ -25,8 +25,6 @@ export class GameMetaService
     this._isSimulationStarted = false;
     this._maze = Maze.CompleteMaze(this.mazeWidth,this.mazeHeight,this.startPos,this.goalPos);
 
-    var r = new RecursiveFiller(this.maze);
-    r.Construct();
   }
   StartSimulation():void
   {
