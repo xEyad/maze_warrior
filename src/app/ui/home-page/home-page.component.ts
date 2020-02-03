@@ -1,3 +1,4 @@
+import { RecursiveFiller } from './../../models/maze filler/recursive-filler';
 import { GameService } from './../../services/game.service';
 import { GameMetaService } from './../../services/game-meta.service';
 import { Component, OnInit } from '@angular/core';
@@ -13,6 +14,8 @@ export class HomePageComponent implements OnInit {
   constructor(public meta:GameMetaService,public game:GameService) { }
 
   ngOnInit() {
+    var r = new RecursiveFiller(this.meta.maze);
+    r.ConstructInSteps(this.game)
   }
   Reset():void
   {
