@@ -2,7 +2,7 @@
   <div class="d-flex">
     <ng-container *ngFor="let w of mazeWidth();let x = index">
       <gfx-tile [tile]="GetTileAt(x,y)" [ngStyle]="TileDimensionsStyle()">
-        <gfx-mark [isStart]="IsStart(x,y)" [isIndexed]="IsIndexed(x,y)"></gfx-mark>
+        <gfx-mark [mark]=GetMarkAt(x,y)></gfx-mark>
       </gfx-tile>
     </ng-container>
   </div>

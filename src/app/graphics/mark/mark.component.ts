@@ -1,3 +1,4 @@
+import { Mark } from './../../models/TileMark';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -7,8 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MarkComponent implements OnInit {
 
-  @Input() isStart: boolean = false;
-  @Input() isIndexed:boolean = false;
+  @Input() mark:Mark = Mark.none;
+
   constructor() { }
 
   ngOnInit()   {
@@ -16,9 +17,9 @@ export class MarkComponent implements OnInit {
 
   GetCssClass():string
   {
-    if(this.isStart)
+    if(Mark.start == this.mark)
       return "startPos";
-    if(this.isIndexed)
+    if(Mark.indexed == this.mark)
       return "indexed";
   }
 }

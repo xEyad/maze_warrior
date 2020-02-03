@@ -2,6 +2,7 @@ import { GameMetaService } from './../../services/game-meta.service';
 import { Point } from './../../models/utility/point';
 import { Maze } from './../../models/maze';
 import { Tile } from './../../models/tile';
+import { TileMark,Mark } from './../../models/TileMark';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -12,13 +13,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class MazeComponent implements OnInit {
 
   @Input() maze:Readonly<Maze>;
-  @Input() indexedLocations:Readonly<Point>[]; //SHOULD CHANGE TO MARKS ARRAY
+  @Input() TileMarks:Readonly<TileMark>[];
   widthArr:Array<number>;
   heightArr:Array<number>;
   constructor(public meta:GameMetaService)
   {
-    if(this.indexedLocations == undefined)
-      this.indexedLocations = [];
+    if(this.TileMarks == undefined)
+      this.TileMarks = [];
   }
 
   ngOnInit()
@@ -44,18 +45,15 @@ export class MazeComponent implements OnInit {
   {
     return this.maze.tiles[this.maze.to1D(x,y)];
   }
-  IsStart(x:number,y:number) : boolean
+  GetMarkAt(x:number,y:number) : Readonly<Mark>
   {
-    return this.maze.startTile.coordinate.Equals(this.GetTileAt(x,y).coordinate);
-  }
-  IsIndexed(x:number,y:number) : boolean
-  {
-    for (const p of this.indexedLocations)
+    if(this.TileMarks.length==0)
+      return Mark.none;
+    for (const tileMark of this.TileMarks)
     {
-      if(p.Equals(this.GetTileAt(x,y).coordinate))
-        return true;
+      if(tileMark.location.Equals(this.GetTileAt(x,y).coordinate))
+        return tileMark.type;
     }
-    return false;
   }
   TileDimensionsStyle()
   {
