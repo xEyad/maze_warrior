@@ -1,3 +1,4 @@
+import { GameService } from './../../services/game.service';
 import { Emath } from './../utility/eMath';
 import { Point } from './../utility/point';
 import { State } from './../tile';
@@ -7,7 +8,10 @@ export class RecursiveFiller
 {
   constructor(maze:Maze)
   {
+    this.minWidth=3;
+    this.minLength=3;
     this.maze = maze;
+    this.doors = [];
     this.chambers = [];
     const topLeft = this.maze.tiles[0].coordinate;
     const botRight = this.maze.tiles[this.maze.tiles.length-1].coordinate;
@@ -15,16 +19,29 @@ export class RecursiveFiller
     this.chambers.push(pair);
 
   }
+  ConstructInSteps(game:GameService):void
+  {
+    const fps = 10;
+    const loopRef = setInterval(()=>{
+      game.DoGameStep();
+      this.DoConstructionStep();
+      if(this.chambers.length==0)
+        clearInterval(loopRef);
+    },fps/1000);
+  }
   Construct():void
   {
     while(this.chambers.length > 0)
     {
-      const pair = this.chambers.pop();
-      this.GenerateDivisionPoints(pair.topLeft,pair.botRight);
-      this.CreateWalls();
-      this.AddChambers();
+      this.DoConstructionStep();
     }
-    //repeate with new 4 chambers and don't forget to stop at certain size 2x2
+  }
+  private DoConstructionStep():void
+  {
+    const pair = this.chambers.pop();
+    this.GenerateDivisionPoints(pair.topLeft,pair.botRight);
+    this.CreateWalls();
+    this.AddChambers();
   }
   private AddChambers():void
   {
@@ -37,6 +54,8 @@ export class RecursiveFiller
   {
     const topLeft = new Point(this.divisionPoint3.x,this.divisionPoint1.y);
     const botRight = this.IntersectionPoint();
+    if(!this.IsChamberDimensionValid(topLeft,botRight))
+      return;
     const pair = new ChamberPair(topLeft,botRight);
     this.chambers.push(pair);
   }
@@ -44,6 +63,8 @@ export class RecursiveFiller
   {
     const topLeft = this.divisionPoint1;
     const botRight = this.divisionPoint4;
+    if(!this.IsChamberDimensionValid(topLeft,botRight))
+      return;
     const pair = new ChamberPair(topLeft,botRight);
     this.chambers.push(pair);
   }
@@ -51,6 +72,8 @@ export class RecursiveFiller
   {
     const topLeft = this.divisionPoint3;
     const botRight = this.divisionPoint2;
+    if(!this.IsChamberDimensionValid(topLeft,botRight))
+      return;
     const pair = new ChamberPair(topLeft,botRight);
     this.chambers.push(pair);
   }
@@ -58,6 +81,8 @@ export class RecursiveFiller
   {
     const topLeft = this.IntersectionPoint();
     const botRight = new Point(this.divisionPoint4.x,this.divisionPoint2.y);
+    if(!this.IsChamberDimensionValid(topLeft,botRight))
+      return;
     const pair = new ChamberPair(topLeft,botRight);
     this.chambers.push(pair);
   }
@@ -79,13 +104,21 @@ export class RecursiveFiller
       if(this.IsTileEmpty(coordinate))
         this.maze.SetTileState(coordinate,State.blocked);
       else
+      {
         foundNonEmptyTile = true;
+        this.CreateDoorAt(coordinate);
+      }
     }
     if(!foundNonEmptyTile)
     {
-      const y = Emath.GetRandomInt(this.divisionPoint1.y,this.divisionPoint2.y+1);
-      const coordinate = new Point(this.divisionPoint1.x,y);
-      this.maze.SetTileState(coordinate,State.open);
+      let coordinate:Point;
+      do
+      {
+        const y = Emath.GetRandomInt(this.divisionPoint1.y,this.divisionPoint2.y+1);
+        coordinate = new Point(this.divisionPoint1.x,y);
+      }while(coordinate.Equals(this.IntersectionPoint()))
+
+      this.CreateDoorAt(coordinate);
     }
   }
   private CreateHorizontalWall():void
@@ -97,39 +130,52 @@ export class RecursiveFiller
       if(this.IsTileEmpty(coordinate))
         this.maze.SetTileState(coordinate,State.blocked);
       else
+      {
         foundNonEmptyTile = true;
+        this.CreateDoorAt(coordinate);
+      }
     }
     if(!foundNonEmptyTile)
     {
-      const x = Emath.GetRandomInt(this.divisionPoint3.x,this.divisionPoint4.x+1);
-      const coordinate = new Point(x,this.divisionPoint3.y);
-      this.maze.SetTileState(coordinate,State.open);
+      let coordinate:Point;
+      do
+      {
+        const x = Emath.GetRandomInt(this.divisionPoint3.x,this.divisionPoint4.x+1);
+        coordinate = new Point(x,this.divisionPoint3.y);
+      }while(coordinate.Equals(this.IntersectionPoint()))
+      this.CreateDoorAt(coordinate);
     }
   }
   private GenerateDivisionPoints(start:Point,end:Point):void
   {
-    let offsetStart = new Point(start.x+2,start.y+2);
-    let offsetEnd = new Point(end.x-2,end.y-2);
     do
     {
-      this.divisionPoint1 = this.RandomPointOnXBetween(offsetStart,offsetEnd);
-      this.divisionPoint2 = new Point(this.divisionPoint1.x,offsetEnd.y);
+      this.divisionPoint1 = this.RandomPointOnXBetween(start,end);
+      this.divisionPoint2 = new Point(this.divisionPoint1.x,end.y);
     }
-    while(this.ArePointsOnBlockedTiles(this.divisionPoint1,this.divisionPoint2))
+    while(
+      this.IsInDoors(this.divisionPoint2) &&
+      this.IsInDoors(this.divisionPoint1)
+      )
 
     do
     {
-      this.divisionPoint3 = this.RandomPointOnYBetween(offsetStart,offsetEnd);
-      this.divisionPoint4 = new Point(offsetEnd.x,this.divisionPoint3.y);
+      this.divisionPoint3 = this.RandomPointOnYBetween(start,end);
+      this.divisionPoint4 = new Point(end.x,this.divisionPoint3.y);
     }
-    while(this.ArePointsOnBlockedTiles(this.divisionPoint3,this.divisionPoint4))
+    while(
+      this.IsInDoors(this.divisionPoint3) &&
+      this.IsInDoors(this.divisionPoint4)
+    )
   }
-  private ArePointsOnBlockedTiles(p1:Point,p2:Point):boolean
+  private IsInDoors(p:Point):boolean
   {
-    return (
-      this.maze.GetTileState(p1) == State.blocked ||
-      this.maze.GetTileState(p2) == State.blocked
-      );
+    for (const point of this.doors)
+    {
+      if(point.Equals(p))
+        return true;
+    }
+    return false;
   }
   private RandomPointOnXBetween(start:Point,end:Point):Point
   {
@@ -145,12 +191,26 @@ export class RecursiveFiller
   {
     return (!this.maze.startTile.coordinate.Equals(coordinate) && !this.maze.goalTile.coordinate.Equals(coordinate));
   }
+  private IsChamberDimensionValid(topLeft:Point,botRight:Point):boolean
+  {
+    const width = Math.abs(topLeft.x-botRight.x) - 1;
+    const length = Math.abs(topLeft.y-botRight.y)- 1;
+    return (width>this.minWidth && length>this.minLength);
+  }
+  private CreateDoorAt(coordinate:Point):void
+  {
+    this.maze.SetTileState(coordinate,State.open);
+    this.doors.push(coordinate);
+  }
   private maze:Maze;
   private divisionPoint1:Point;
   private divisionPoint2:Point;
   private divisionPoint3:Point;
   private divisionPoint4:Point;
   private chambers:Array<ChamberPair>;
+  private doors:Array<Point>;
+  private minLength;
+  private minWidth;
 }
 
 class ChamberPair
