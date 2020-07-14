@@ -79,7 +79,7 @@ export class TileComponent implements OnInit {
   {
     this.tile.state = State.open;
   }
-  private Block():void
+  Block():void
   {
     if(!this.tile.isGoal && !this.meta.startPos.Equals(this.tile.coordinate))
       this.tile.state = State.blocked;
