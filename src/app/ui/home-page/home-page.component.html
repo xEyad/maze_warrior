@@ -4,10 +4,11 @@
     <!-- <div class="col-sm">
     </div> -->
     <div class="col-sm">
-      <ui-world-generator *ngIf="!meta.isSimulationStarted" ></ui-world-generator>
-      <app-backtrack-logic *ngIf="meta.isSimulationStarted" [pauseSolving]="IsSimulationPaused()"></app-backtrack-logic>
+      <ui-world-generator *ngIf="!meta.isSimulationStarted" class="d-flex justify-content-center" ></ui-world-generator>
+      <app-backtrack-logic *ngIf="meta.isSimulationStarted" [pauseSolving]="IsSimulationPaused()" class="d-flex justify-content-center"></app-backtrack-logic>
     </div>
     <!-- <div class="col-sm">
     </div> -->
   </div>
 </div>
+

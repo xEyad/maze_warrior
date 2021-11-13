@@ -1,11 +1,19 @@
+:host{
+  width: 100%;
+overflow-x: hidden;
+display: block;
+}
+
 .container-fluid
 {
-  background-color: #596475;
+  background-color: #34495e;
 
   .btn-group{
     padding: .3rem 1.2rem;
   }
 }
+
+
 
 h1{
   padding-top: 2%;
