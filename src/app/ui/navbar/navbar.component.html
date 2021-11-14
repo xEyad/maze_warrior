@@ -3,16 +3,16 @@
     <div class="col-2 ">
       <h1 style="padding-top: 15px;">Maze warrior</h1>
     </div>
-    <div class="col d-flex">
-      <div class="btn-group" mdbDropdown>
+    <div class="col-8 d-flex">
+      <div class="simple-dropdown">
         <button class="simple-btn">
           Algorithims ▼
         </button>
 
-        <div class="dropdown-menu dropdown-primary">
-          <a class="dropdown-item" href="#">Backtrack</a>
-          <a class="dropdown-item" href="#">Greedy</a>
-          <a class="dropdown-item" href="#">Djikstra</a>
+        <div class="simple-dropdown-content">
+          <a class="simple-dropdown-item" href="#">Backtrack</a>
+          <a class="simple-dropdown-item" href="#">Greedy (coming soon..)</a>
+          <a class="simple-dropdown-item" href="#">Djikstra (coming soon..)</a>
         </div>
       </div>
       <ui-maze-construction></ui-maze-construction>
@@ -20,6 +20,6 @@
       <button class="simple-btn" (click)="PauseSimulation()">Pause</button>
       <button class="simple-btn" (click)="ResetSimulation()">Reset</button>
     </div>
-    <ui-control-panel></ui-control-panel>
+    <ui-control-panel class="col-2"></ui-control-panel>
   </div>
 </div>
