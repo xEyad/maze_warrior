@@ -3,9 +3,18 @@
   <div class="row">
     <!-- <div class="col-sm">
     </div> -->
-    <div class="col-sm">
+    <div class="col-12-sm text-center" style="margin: auto;">
       <ui-world-generator *ngIf="!meta.isSimulationStarted" class="d-flex justify-content-center" ></ui-world-generator>
       <app-backtrack-logic *ngIf="meta.isSimulationStarted" [pauseSolving]="IsSimulationPaused()" class="d-flex justify-content-center"></app-backtrack-logic>
+      <p style="text-align: left;" class="mt-5">
+        1- Left click on the map to generate add or remove tiles.
+        <br>
+        2- drag and drop the goal icon to where you want (must be open tile)
+        <br>
+        3- start the backtrack algorithm
+        <br>
+        Note: more options can be found in the header
+      </p>
     </div>
     <!-- <div class="col-sm">
     </div> -->
