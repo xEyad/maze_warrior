@@ -1,3 +1,19 @@
+$indexColor: #ffa8a8;
+@keyframes indexATile {
+  0%   {
+    transform: scale(.3);
+    background-color: $indexColor;
+  }
+  50%  {
+    transform: scale(1.2);
+    background-color: $indexColor;
+  }
+  100%  {
+    transform: scale(1.0);
+    background-color: $indexColor;
+  }
+}
+
 :host
 {
   display: flex;
@@ -21,10 +37,13 @@
   }
   div.indexed
   {
+    transition: .2s;
     align-self: center;
     justify-self: center;
     width: 80%;
     height: 80%;
-    background-color: #5db7de;
+    background-color: $indexColor;
+    animation-name: indexATile;
+    animation-duration: 0.4s;
   }
 }

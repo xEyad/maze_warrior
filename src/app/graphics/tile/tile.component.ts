@@ -42,6 +42,7 @@ export class TileComponent implements OnInit {
     else
       return this.tile.state;
   }
+
   AcceptDrop(event):void
   {
 
@@ -59,15 +60,18 @@ export class TileComponent implements OnInit {
         break;
     }
   }
+
   SetAllowDrop(event:Event):void
   {
     if(this.tile.state != State.blocked && !(this.tile.isGoal || this.tile.coordinate.Equals(this.meta.startPos)))
       event.preventDefault();
   }
+
   IsDraggable():boolean
   {
     return this.tile.isGoal || this.tile.coordinate.Equals(this.meta.startPos);
   }
+
   ToggleState():void
   {
     if(this.tile.state==State.open)
@@ -75,10 +79,12 @@ export class TileComponent implements OnInit {
     else
       this.Open();
   }
+
   private Open():void
   {
     this.tile.state = State.open;
   }
+
   Block():void
   {
     if(!this.tile.isGoal && !this.meta.startPos.Equals(this.tile.coordinate))

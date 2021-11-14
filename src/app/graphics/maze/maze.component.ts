@@ -27,6 +27,7 @@ export class MazeComponent implements OnInit {
     this.widthArr = Array(this.maze.width).fill(0);
     this.heightArr = Array(this.maze.height).fill(0);
   }
+
   mazeHeight() :Array<number>
   {
     if(this.heightArr.length == this.maze.height)
@@ -34,6 +35,7 @@ export class MazeComponent implements OnInit {
     this.heightArr = Array(this.maze.height).fill(0);
     return this.heightArr;
   }
+
   mazeWidth() :Array<number>
   {
     if(this.widthArr.length == this.maze.width)
@@ -41,10 +43,12 @@ export class MazeComponent implements OnInit {
     this.widthArr = Array(this.maze.width).fill(0);
     return this.widthArr;
   }
+
   GetTileAt(x:number,y:number) :Readonly<Tile>
   {
     return this.maze.tiles[this.maze.to1D(x,y)];
   }
+
   GetMarkAt(x:number,y:number) : Readonly<Mark>
   {
     if(this.TileMarks.length==0)
@@ -55,6 +59,7 @@ export class MazeComponent implements OnInit {
         return tileMark.type;
     }
   }
+
   TileDimensionsStyle()
   {
     return {

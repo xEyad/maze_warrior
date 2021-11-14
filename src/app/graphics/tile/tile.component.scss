@@ -1,6 +1,38 @@
 $borderWidth: 1px;
-$mainColor:#596475;
+$mainColor:rgb(12, 53, 71);
 $walkerColor:#c20114;
+
+@keyframes blockTile {
+  0%   {
+    transform: scale(.3);
+    background-color: $mainColor;
+  }
+  50%  {
+    transform: scale(1.2);
+    background-color: $mainColor;
+  }
+  100%  {
+    transform: scale(1.0);
+    background-color: $mainColor;
+  }
+}
+
+@keyframes openTile {
+  0%   {
+    transform: scale(1.0);
+    background-color: $mainColor;
+  }
+  50%  {
+    transform: scale(0.5);
+    background-color: #869aa3;
+  }
+  100%  {
+    transform: scale(0);
+    background-color: #ffffff;
+  }
+}
+
+
 div
 {
   display: flex;
@@ -8,14 +40,17 @@ div
   justify-content: center;
   width: 100%;
   height: 100%;
+
 }
 .open
 {
-  border: solid $borderWidth $mainColor;
+  border: solid $borderWidth rgb(169, 211, 245);
+  animation-name: openTile;
+  animation-duration: 0.2s;
 }
 div:hover
 {
-  $color:#9f9fed;
+  $color:#34495e94;
   opacity: 0.5;
   color: $color;
   border: solid $borderWidth $color;
@@ -26,6 +61,8 @@ div:hover
   color: $mainColor;
   border: solid $borderWidth $mainColor;
   background-color: $mainColor;
+  animation-name: blockTile;
+  animation-duration: 1s;
 }
 .goal
 {

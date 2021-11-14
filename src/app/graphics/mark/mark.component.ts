@@ -21,5 +21,6 @@ export class MarkComponent implements OnInit {
       return "startPos";
     if(Mark.indexed == this.mark)
       return "indexed";
+    return "";
   }
 }

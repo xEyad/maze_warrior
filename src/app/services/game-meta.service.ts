@@ -52,7 +52,8 @@ export class GameMetaService
   }
   ResetMaze():void
   {
-    this._maze.ClearBlocks();
+    if(!this._isSimulationRunning)
+      this._maze.ClearBlocks();
   }
   RandomFillMaze():void
   {
