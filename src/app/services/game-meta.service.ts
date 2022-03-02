@@ -19,7 +19,7 @@ export class GameMetaService
     this._mazeWidth = 25;
     this._mazeHeight = 25;
     this._startPos = new Point(0,0);
-    this._goalPos = new Point(1,1);
+    this._goalPos = new Point(20,20);
     this._isSimulationRunning = false;
     this._isSimulationStopped = false;
     this._isSimulationStarted = false;
