@@ -39,6 +39,8 @@ export class TileComponent implements OnInit {
   {
     if(this.tile.isGoal)
       return "goal";
+    else if(this.meta.startPos.Equals(this.tile.coordinate))
+      return "startPos";
     else
       return this.tile.state;
   }

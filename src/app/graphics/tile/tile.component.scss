@@ -81,3 +81,14 @@ div:hover
   justify-self: center;
   border: solid $borderWidth $walkerColor;
 }
+
+.startPos
+  {
+    align-self: center;
+    justify-self: center;
+    border: solid $borderWidth #ffa400;
+    background-image: url('../../../assets/start.png');
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
