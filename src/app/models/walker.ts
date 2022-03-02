@@ -12,11 +12,13 @@ export class Walker
   {
     return this.curPos;
   }
+
   MoveStack():Readonly<Point>[]
   {
     // return  this.moveStack;
     return  this.moveStack;
   }
+
   IsVisitedBefore(loc:Point):boolean
   {
     for (let index = 0; index < this.VisitedLocations().length; index++)
@@ -27,10 +29,12 @@ export class Walker
     }
     return false;
   }
+
   VisitedLocations():ReadonlyArray<Point>
   {
     return this.visited;
   }
+
   Move(dir:Dir):void
   {
     switch (dir)
@@ -53,6 +57,7 @@ export class Walker
 
 
   }
+
   DirFromPoint(point:Point):Dir
   {
     if(point.x > this.CurPos().x)
@@ -66,22 +71,26 @@ export class Walker
     else
       throw `can't determine direction of point ${point} relative to the walker`;
   }
+
   MoveTo(loc:Point):void
   {
     this.AddToVisited(loc);
     this.moveStack.push(loc);
     this.curPos = loc;
   }
+
   private MoveXBy(d:number)
   {
     let p = new Point(this.curPos.x+d,this.curPos.y);
     this.MoveTo(p);
   }
+
   private MoveYBy(d:number)
   {
     let p = new Point(this.curPos.x,this.curPos.y+d);
     this.MoveTo(p);
   }
+
   private AddToVisited(point:Point):void
   {
     if(!this.visited.includes(point))

@@ -18,6 +18,7 @@ export class WorldComponent implements OnInit {
   {
 
   }
+
   GetIndexedLocations() : Readonly<TileMark[]>
   {
     let marksArray:TileMark[] = [];

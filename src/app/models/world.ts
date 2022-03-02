@@ -12,14 +12,17 @@ export class World implements iDrawable
     this.maze = maze;
     this.walker = new Walker(this.maze.startTile.coordinate);
   }
+
   Talk():string
   {
     return this.maze.Talk();
   }
+
   Draw()
   {
     this.maze.Draw();
   }
+
   MoveWalker(dir:Dir)
   {
     let newPos = this.getPosForDir(dir);
@@ -29,6 +32,7 @@ export class World implements iDrawable
       this.maze.PutWalkerAt(this.walkerPos);
     }
   }
+
   PutWalkerAt(loc:Point):void
   {
     if(this.isNewPosValid(loc))
@@ -37,32 +41,40 @@ export class World implements iDrawable
       this.walker.MoveTo(loc);
     }
   }
+
   TileState(location:Point): Readonly<State>
   {
     return this.maze.GetTileState(location);
   }
+
   get goalPos() : Readonly<Point>  {
     return  this.maze.goalTile.coordinate;
   }
+
   get startPos() : Readonly<Point>  {
     return  this.maze.startTile.coordinate;
   }
+
   get walkerPos() : Readonly<Point>
   {
     return  this.walker.CurPos();
   }
+
   get width(): Readonly<number>
   {
     return this.maze.width;
   }
+
   get height(): Readonly<number>
   {
     return this.maze.height;
   }
+
   Maze(): Readonly<Maze>
   {
     return this.maze;
   }
+
   private isNewPosValid(newPos:Point) : boolean
   {
     return  (
@@ -71,6 +83,7 @@ export class World implements iDrawable
       this.maze.GetTileState(newPos) != State.blocked
       );
   }
+
   private getPosForDir(dir:Dir) : Point
   {
     switch (dir)
